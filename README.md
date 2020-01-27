@@ -45,56 +45,60 @@ NURBSpy can  be used to create Bézier, B-Spline and NURBS curves. The type of c
 
 For instance, the following code snipped can be used to generate a fourth degree polynomial Bézier curve in 2D
 
-	# Import packages
-	import numpy as np
-	import matplotlib.pyplot as plt
-	from nurbs_curve import NurbsCurve
+```py
+# Import packages
+import numpy as np
+import matplotlib.pyplot as plt
+from nurbs_curve import NurbsCurve
 
-	# Define the array of control points
-	P = np.zeros((2,5))
-	P[:, 0] = [0.20, 0.50]
-	P[:, 1] = [0.40, 0.70]
-	P[:, 2] = [0.80, 0.60]
-	P[:, 3] = [0.60, 0.20]
-	P[:, 4] = [0.40, 0.20]
+# Define the array of control points
+P = np.zeros((2,5))
+P[:, 0] = [0.20, 0.50]
+P[:, 1] = [0.40, 0.70]
+P[:, 2] = [0.80, 0.60]
+P[:, 3] = [0.60, 0.20]
+P[:, 4] = [0.40, 0.20]
 
-	# Create and plot the Bezier curve
-	bezier2D = NurbsCurve(control_points=P)
-	bezier2D.plot_curve()
-	plt.show()
+# Create and plot the Bezier curve
+bezier2D = NurbsCurve(control_points=P)
+bezier2D.plot_curve()
+plt.show()
+
+```
 
 Whereas the following code snipped can be used to generate a third degree rational Bézier curve in 3D
 
-	# Import packages
-	import numpy as np
-	from nurbs_curve import NurbsCurve
-	
-	# Define the array of control points
-	P = np.zeros((3,5))
-	P[:, 0] = [0.20, 0.50, 0.00]
-	P[:, 1] = [0.40, 0.70, 0.25]
-	P[:, 2] = [0.80, 0.60, 0.50]
-	P[:, 3] = [0.80, 0.40, 0.75]
-	P[:, 4] = [0.40, 0.20, 1.00]
+```py
+# Import packages
+import numpy as np
+from nurbs_curve import NurbsCurve
 
-	# Maximum index of the control points (counting from zero)
-	n = np.shape(P)[1] - 1
+# Define the array of control points
+P = np.zeros((3,5))
+P[:, 0] = [0.20, 0.50, 0.00]
+P[:, 1] = [0.40, 0.70, 0.25]
+P[:, 2] = [0.80, 0.60, 0.50]
+P[:, 3] = [0.80, 0.40, 0.75]
+P[:, 4] = [0.40, 0.20, 1.00]
 
-	# Define the array of control point weights
-	W = np.asarray([1, 2, 3, 2, 1])
+# Maximum index of the control points (counting from zero)
+n = np.shape(P)[1] - 1
 
-	# Define the order of the basis polynomials
-	p = 3
+# Define the array of control point weights
+W = np.asarray([1, 2, 3, 2, 1])
 
-	# Define the knot vector (clamped spline)
-	# p+1 zeros, n-p equispaced points between 0 and 1, and p+1 ones. In total r+1 points where r=n+p+1
-	U = np.concatenate((np.zeros(p), np.linspace(0, 1, n - p + 2), np.ones(p)))
-	
-	# Create and plot the B-Spline curve
-	nurbs3D = NurbsCurve(control_points=P, weights=W, degree=p, knots=U)
-	nurbs3D.plot_curve()
-	plt.show()
+# Define the order of the basis polynomials
+p = 3
 
+# Define the knot vector (clamped spline)
+# p+1 zeros, n-p equispaced points between 0 and 1, and p+1 ones. In total r+1 points where r=n+p+1
+U = np.concatenate((np.zeros(p), np.linspace(0, 1, n - p + 2), np.ones(p)))
+
+# Create and plot the B-Spline curve
+nurbs3D = NurbsCurve(control_points=P, weights=W, degree=p, knots=U)
+nurbs3D.plot_curve()
+plt.show()
+```
 
 Note the both curves are generated as instances of the NurbsCurve class. For the case of the 3D NURBS curve the control points and weights, degree and knot vector are provided at construction, whereas for the case of the 2D Bézier curve the only argument is the array of control points and the weghts, curve degree, and knot sequence are generated internally.
 
@@ -129,94 +133,99 @@ In addition, NURBSpy contains classes to define special types of NURBS surfaces 
 
 The following code snipped shows how to generate a simple NURBS surface
 
-	# Import packages
-	import numpy as np
-	import matplotlib.pyplot as plt
-	from nurbs_surface import NurbsSurface
-	
-	# Define the array of control points
-	n_dim, n, m = 3, 3, 2
-	P = np.zeros((n_dim, n, m))
+```py
+# Import packages
+import numpy as np
+import matplotlib.pyplot as plt
+from nurbs_surface import NurbsSurface
 
-	# First row
-	P[:, 0, 0] = [0.00, 3.00, 0.00]
-	P[:, 1, 0] = [1.00, 2.00, 0.00]
-	P[:, 2, 0] = [2.00, 1.50, 0.00]
+# Define the array of control points
+n_dim, n, m = 3, 3, 2
+P = np.zeros((n_dim, n, m))
 
-	# Second row
-	P[:, 0, 1] = [0.00, 3.00, 1.00]
-	P[:, 1, 1] = [1.00, 2.00, 1.00]
-	P[:, 2, 1] = [2.00, 1.50, 1.00]
+# First row
+P[:, 0, 0] = [0.00, 3.00, 0.00]
+P[:, 1, 0] = [1.00, 2.00, 0.00]
+P[:, 2, 0] = [2.00, 1.50, 0.00]
 
-	# Define the array of control point weights
-	W = np.zeros((n, m))
-	W[:, 0] = np.asarray([1, 1, 1])		# First row
-	W[:, 1] = np.asarray([1, 1, 1])		# Second row
-	
-	# Maximum index of the control points (counting from zero)
-	n = np.shape(P)[1] - 1
-	m = np.shape(P)[2] - 1
+# Second row
+P[:, 0, 1] = [0.00, 3.00, 1.00]
+P[:, 1, 1] = [1.00, 2.00, 1.00]
+P[:, 2, 1] = [2.00, 1.50, 1.00]
 
-	# Define the order of the basis polynomials
-	# Linear (p = 1), Quadratic (p = 2), Cubic (p = 3), etc.
-	# Set p = n (number of control points minus one) to obtain a Bezier
-	p = 2
-	q = 1
+# Define the array of control point weights
+W = np.zeros((n, m))
+W[:, 0] = np.asarray([1, 1, 1])		# First row
+W[:, 1] = np.asarray([1, 1, 1])		# Second row
 
-	# Define the knot vectors (clamped spline)
-	# p+1 zeros, n-p equispaced points between 0 and 1, and p+1 ones.  In total r+1 points where r=n+p+1
-	# q+1 zeros, m-p equispaced points between 0 and 1, and q+1 ones. In total s+1 points where s=m+q+1
-	U = np.concatenate((np.zeros(p), np.linspace(0, 1, n - p + 2), np.ones(p)))
-	V = np.concatenate((np.zeros(q), np.linspace(0, 1, m - q + 2), np.ones(q)))
+# Maximum index of the control points (counting from zero)
+n = np.shape(P)[1] - 1
+m = np.shape(P)[2] - 1
 
-	# Create and plot the NURBS surface
-	nurbsSurface = NurbsSurface(control_points=P, weights=W, u_degree=p, v_degree=q, u_knots=U, v_knots=V)
-	nurbsSurface.plot_surface()
-	plt.show()
+# Define the order of the basis polynomials
+# Linear (p = 1), Quadratic (p = 2), Cubic (p = 3), etc.
+# Set p = n (number of control points minus one) to obtain a Bezier
+p = 2
+q = 1
 
+# Define the knot vectors (clamped spline)
+# p+1 zeros, n-p equispaced points between 0 and 1, and p+1 ones.  In total r+1 points where r=n+p+1
+# q+1 zeros, m-p equispaced points between 0 and 1, and q+1 ones. In total s+1 points where s=m+q+1
+U = np.concatenate((np.zeros(p), np.linspace(0, 1, n - p + 2), np.ones(p)))
+V = np.concatenate((np.zeros(q), np.linspace(0, 1, m - q + 2), np.ones(q)))
+
+# Create and plot the NURBS surface
+nurbsSurface = NurbsSurface(control_points=P, weights=W, u_degree=p, v_degree=q, u_knots=U, v_knots=V)
+nurbsSurface.plot_surface()
+plt.show()
+```
 
 The next example shows how to define a ruled surface using the NurbsSurfaceRuled() class
 
-	# Import packages
-	import numpy as np
-	import matplotlib.pyplot as plt
-	from nurbs_curve import NurbsCurve
-	from nurbs_surface_ruled import NurbsSurfaceRuled
 
-	# Define the lower NURBS curve (rational Bézier curve)
-	P1 = np.zeros((3, 5))
-	P1[:, 0] = [0.00, 0.00, 0.00]
-	P1[:, 1] = [0.25, 0.00, 0.50]
-	P1[:, 2] = [0.50, 0.00, 0.50]
-	P1[:, 3] = [0.75, 0.00, 0.00]
-	P1[:, 4] = [1.00, 0.00, 0.00]
-	W1 = np.asarray([1, 1, 2, 1, 1])
-	nurbsCurve1 = NurbsCurve(control_points=P1, weights=W1)
+```py
+# Import packages
+import numpy as np
+import matplotlib.pyplot as plt
+from nurbs_curve import NurbsCurve
+from nurbs_surface_ruled import NurbsSurfaceRuled
 
-	# Define the lower NURBS curve (rational Bézier curve)
-	P2 = np.zeros((3, 5))
-	P2[:, 0] = [0.00, 1.00, 0.50]
-	P2[:, 1] = [0.25, 1.00, 0.00]
-	P2[:, 2] = [0.50, 1.00, 0.00]
-	P2[:, 3] = [0.75, 1.00, 0.50]
-	P2[:, 4] = [1.00, 1.00, 0.50]
-	W2 = np.asarray([1, 1, 2, 1, 1])
-	nurbsCurve2 = NurbsCurve(control_points=P2, weights=W2)
+# Define the lower NURBS curve (rational Bézier curve)
+P1 = np.zeros((3, 5))
+P1[:, 0] = [0.00, 0.00, 0.00]
+P1[:, 1] = [0.25, 0.00, 0.50]
+P1[:, 2] = [0.50, 0.00, 0.50]
+P1[:, 3] = [0.75, 0.00, 0.00]
+P1[:, 4] = [1.00, 0.00, 0.00]
+W1 = np.asarray([1, 1, 2, 1, 1])
+nurbsCurve1 = NurbsCurve(control_points=P1, weights=W1)
 
-	# Create and plot the ruled NURBS surface
-	ruledNurbsSurface = NurbsSurfaceRuled(nurbsCurve1, nurbsCurve2).NurbsSurface
-	fig, ax = ruledNurbsSurface.plot(surface=True, surface_color='red', control_points=True)
+# Define the lower NURBS curve (rational Bézier curve)
+P2 = np.zeros((3, 5))
+P2[:, 0] = [0.00, 1.00, 0.50]
+P2[:, 1] = [0.25, 1.00, 0.00]
+P2[:, 2] = [0.50, 1.00, 0.00]
+P2[:, 3] = [0.75, 1.00, 0.50]
+P2[:, 4] = [1.00, 1.00, 0.50]
+W2 = np.asarray([1, 1, 2, 1, 1])
+nurbsCurve2 = NurbsCurve(control_points=P2, weights=W2)
 
-	# Plot isoparametric curves
-	ruledNurbsSurface.plot_isocurve_u(fig, ax, np.linspace(0, 1, 5))
-	ruledNurbsSurface.plot_isocurve_v(fig, ax, np.linspace(0, 1, 5))
+# Create and plot the ruled NURBS surface
+ruledNurbsSurface = NurbsSurfaceRuled(nurbsCurve1, nurbsCurve2).NurbsSurface
+fig, ax = ruledNurbsSurface.plot(surface=True, surface_color='red', control_points=True)
 
-	# Plot the upper and lower NURBS curves
-	nurbsCurve1.plot_curve(fig, ax, color='b', linewidth=2.5)
-	nurbsCurve2.plot_curve(fig, ax, color='g', linewidth=2.5)
+# Plot isoparametric curves
+ruledNurbsSurface.plot_isocurve_u(fig, ax, np.linspace(0, 1, 5))
+ruledNurbsSurface.plot_isocurve_v(fig, ax, np.linspace(0, 1, 5))
 
-	# Show the figure
-	plt.show()
+# Plot the upper and lower NURBS curves
+nurbsCurve1.plot_curve(fig, ax, color='b', linewidth=2.5)
+nurbsCurve2.plot_curve(fig, ax, color='g', linewidth=2.5)
+
+# Show the figure
+plt.show()
+```
+
 
 See the directory `demos_surfaces/` to see more examples showing the capabilities of the library and how to use them
 
