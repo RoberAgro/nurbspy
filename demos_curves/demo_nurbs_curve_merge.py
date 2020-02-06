@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 # -------------------------------------------------------------------------------------------------------------------- #
 # Importing user-defined packages
 # -------------------------------------------------------------------------------------------------------------------- #
-sys.path.append(os.getcwd() + '/../functions/')
+sys.path.append(os.getcwd() + '/../src/')
 from nurbs_curve import NurbsCurve
 
 

@@ -75,13 +75,13 @@ class NurbsSurfaceCoons:
         if any([size1 != size2 for size1, size2 in zip(np.shape(C_west.W), np.shape(C_east.W))]):
             raise Exception("The curves (C_west,C_east) must have conforming arrays of weights")
 
-        #
-        # # Check the curve degrees
-        # if C_north.p != C_south.p:
-        #     raise Exception("The curves(C_north,C_south) must have the same degree")
-        #
-        # if C_west.p != C_east.p:
-        #     raise Exception("The curves(C_west,C_east) must have the same degree")
+
+        # Check the curve degrees
+        if C_north.p != C_south.p:
+            raise Exception("The curves(C_north,C_south) must have the same degree")
+
+        if C_west.p != C_east.p:
+            raise Exception("The curves(C_west,C_east) must have the same degree")
 
 
         # Check the knot vectors

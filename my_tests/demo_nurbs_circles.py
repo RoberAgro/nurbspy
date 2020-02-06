@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 # -------------------------------------------------------------------------------------------------------------------- #
 # Importing user-defined packages
 # -------------------------------------------------------------------------------------------------------------------- #
-sys.path.append(os.getcwd() + '/../functions/')
+sys.path.append(os.getcwd() + '/../src/')
 from nurbs_curve import NurbsCurve
 
 
@@ -82,7 +82,7 @@ circle2 = NurbsCurve(P, W, p, U)
 # -------------------------------------------------------------------------------------------------------------------- #
 # Plot the NURBS curve
 # -------------------------------------------------------------------------------------------------------------------- #
-circle1.plot_curve(curve='yes', control_points='yes')
-circle2.plot_curve(curve='yes', control_points='yes')
+circle1.plot(curve=True, control_points=True)
+circle2.plot(curve=True, control_points=True)
 plt.show()
 

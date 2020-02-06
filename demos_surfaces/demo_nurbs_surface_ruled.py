@@ -18,11 +18,11 @@ import matplotlib.pyplot as plt
 # -------------------------------------------------------------------------------------------------------------------- #
 # Importing user-defined packages
 # -------------------------------------------------------------------------------------------------------------------- #
-sys.path.append(os.getcwd() + '/../functions/')
+sys.path.append(os.getcwd() + '/../src/')
 from nurbs_curve import NurbsCurve
 from nurbs_surface import NurbsSurface
 from nurbs_surface_ruled import NurbsSurfaceRuled
-from nurbs_curve_circular_arc import NurbsCircularArc
+from nurbs_curve_circular_arc import CircularArc
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -77,7 +77,7 @@ Y = np.asarray([0.00, 1.00, 0.00])      # Ordinate direction
 R = 0.5                                 # Circle radius
 theta_start = 0.00                      # Start angle
 theta_end = 2*np.pi                     # End angle
-nurbsCurve1 = NurbsCircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
+nurbsCurve1 = CircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
 
 # Create the second circular arc
 O = np.asarray([0.00, 0.00, 0.00])      # Circle center
@@ -86,7 +86,7 @@ Y = np.asarray([0.00, 0.00, 1.00])      # Ordinate direction
 R = 0.5                                 # Circle radius
 theta_start = np.pi/2                   # Start angle
 theta_end = 2*np.pi+np.pi/2             # End angle
-nurbsCurve2 = NurbsCircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
+nurbsCurve2 = CircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
 
 # Create and plot the ruled NURBS surface
 ruledNurbsSurface = NurbsSurfaceRuled(nurbsCurve1, nurbsCurve2).NurbsSurface

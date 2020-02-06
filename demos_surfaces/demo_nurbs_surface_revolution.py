@@ -17,9 +17,9 @@ import matplotlib.pyplot as plt
 # -------------------------------------------------------------------------------------------------------------------- #
 # Importing user-defined packages
 # -------------------------------------------------------------------------------------------------------------------- #
-sys.path.append(os.getcwd() + '/../functions/')
+sys.path.append(os.getcwd() + '/../src/')
 from nurbs_curve import NurbsCurve
-from nurbs_curve_circular_arc import NurbsCircularArc
+from nurbs_curve_circular_arc import CircularArc
 from nurbs_surface_revolution import NurbsSurfaceRevolution
 
 
@@ -66,7 +66,7 @@ X = np.asarray([1.00, 0.00, 0.00])   # Abscissa direction (negative to see norma
 Y = np.asarray([0.00, 0.00, 1.00])    # Ordinate direction
 R = 0.5
 theta_start, theta_end = np.pi/2, 3/2*np.pi
-nurbsGeneratrix = NurbsCircularArc(O, X, Y, R, theta_start, theta_end).NurbsCurve
+nurbsGeneratrix = CircularArc(O, X, Y, R, theta_start, theta_end).NurbsCurve
 
 # Set the a point to define the axis of revolution
 axis_point = np.asarray([0.0, 0.0, 0.0])
@@ -108,7 +108,7 @@ X = np.asarray([1.00, 0.00, 0.00])    # Abscissa direction
 Y = np.asarray([0.00, 0.00, 1.00])    # Ordinate direction
 R = 0.5
 theta_start, theta_end = 0, 2*np.pi
-nurbsGeneratrix = NurbsCircularArc(O, X, Y, R, theta_start, theta_end).NurbsCurve
+nurbsGeneratrix = CircularArc(O, X, Y, R, theta_start, theta_end).NurbsCurve
 
 # Set the a point to define the axis of revolution
 axis_point = np.asarray([0.0, 0.0, 0.0])

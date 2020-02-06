@@ -21,7 +21,7 @@ from nurbs_curve import NurbsCurve
 # -------------------------------------------------------------------------------------------------------------------- #
 # Define the NURBS curve class
 # -------------------------------------------------------------------------------------------------------------------- #
-class NurbsCircularArc:
+class CircularArc:
 
     """ Create a NURBS representation of a circular arc
 

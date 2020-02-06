@@ -18,9 +18,9 @@ import matplotlib.pyplot as plt
 # -------------------------------------------------------------------------------------------------------------------- #
 # Importing user-defined packages
 # -------------------------------------------------------------------------------------------------------------------- #
-sys.path.append(os.getcwd() + '/../functions/')
+sys.path.append(os.getcwd() + '/../src/')
 from nurbs_curve import NurbsCurve
-from nurbs_curve_circular_arc import NurbsCircularArc
+from nurbs_curve_circular_arc import CircularArc
 from nurbs_surface import NurbsSurface
 from nurbs_surface_coons import NurbsSurfaceCoons
 from nurbs_surface_ruled import NurbsSurfaceRuled
@@ -36,14 +36,14 @@ Y = np.asarray([0.00, 1.00, 0.00])      # Ordinate direction
 R = 1.00                                # Circle radius
 theta_start = 0.00                      # Start angle (set any arbitrary value)
 theta_end = 2*np.pi                     # End angle (set any arbitrary value)
-nurbsOuter = NurbsCircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
+nurbsOuter = CircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
 
 # Define the inner circle
 O = np.asarray([0.00, 0.00, 0.00])      # Circle center
 X = np.asarray([1.00, 0.00, 0.00])      # Abscissa direction
 Y = np.asarray([0.00, 1.00, 0.00])      # Ordinate direction
 R = 0.50                                # Circle radius
-nurbsInner = NurbsCircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
+nurbsInner = CircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
 
 # Define start closing boundary
 P = np.zeros((3, 2))

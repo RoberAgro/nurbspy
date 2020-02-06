@@ -817,6 +817,37 @@ class NurbsCurve:
         return binormal
 
 
+    def get_normal_2D(self, u):
+
+        """ Evaluate the the unitary normal vector using the special formula 2D formula
+
+        Parameters
+        ----------
+        u : scalar or ndarray with shape (N,)
+            Scalar or array containing the u-parameter used to evaluate the function
+
+        Returns
+        -------
+        normal : ndarray with shape (2, N)
+            Array containing the unitary normal vector
+            The first dimension of ´normal´ spans the ´(x,y,z)´ coordinates
+            The second dimension of ´normal´ spans the ´u´ parametrization sample points
+
+        """
+
+        # Compute the curve derivatives
+        dC = self.compute_nurbs_derivatives(self.P, self.W, self.p, self.U, u, up_to_order=1)[1, ...]
+
+        # Compute the normal vector
+        if self.ndim == 2:
+            numerator = np.concatenate((-dC[[1], :], dC[[0], :]), axis=0)
+            denominator = (np.sum(numerator ** 2, axis=0)) ** (1 / 2)
+            normal = numerator / denominator
+
+        else: raise Exception("The number of dimensions must be 2")
+
+        return normal
+
 
     # ---------------------------------------------------------------------------------------------------------------- #
     # Compute the curvature, torsion, and arc-length

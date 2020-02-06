@@ -18,11 +18,11 @@ import matplotlib.pyplot as plt
 # -------------------------------------------------------------------------------------------------------------------- #
 # Importing user-defined packages
 # -------------------------------------------------------------------------------------------------------------------- #
-sys.path.append(os.getcwd() + '/../functions/')
+sys.path.append(os.getcwd() + '/../src/')
 from nurbs_curve import NurbsCurve
 from nurbs_surface import NurbsSurface
 from nurbs_surface_extruded import NurbsSurfaceExtruded
-from nurbs_curve_circular_arc import NurbsCircularArc
+from nurbs_curve_circular_arc import CircularArc
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -70,7 +70,7 @@ theta_start = 0.00                      # Start angle
 theta_end = 2*np.pi                     # End angle
 
 # Create and plot the circular arc
-nurbsCurve = NurbsCircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
+nurbsCurve = CircularArc(O, X, Y , R, theta_start, theta_end).NurbsCurve
 
 # Set the extrusion direction (can be unitary or not)
 direction = np.asarray([0, 0, 1])

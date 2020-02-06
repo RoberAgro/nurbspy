@@ -18,9 +18,9 @@ import matplotlib.pyplot as plt
 # -------------------------------------------------------------------------------------------------------------------- #
 # Importing user-defined packages
 # -------------------------------------------------------------------------------------------------------------------- #
-sys.path.append(os.getcwd() + '/../functions/')
+sys.path.append(os.getcwd() + '/../src/')
 from nurbs_curve import NurbsCurve
-from nurbs_curve_circular_arc import NurbsCircularArc
+from nurbs_curve_circular_arc import CircularArc
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -35,7 +35,7 @@ theta_start = 1/6*np.pi                 # Start angle
 theta_end = 3/2*np.pi - 1/6*np.pi       # End angle
 
 # Create and plot the circular arc
-my_circular_arc = NurbsCircularArc(O, X, Y , R, theta_start, theta_end)
+my_circular_arc = CircularArc(O, X, Y , R, theta_start, theta_end)
 my_circular_arc.plot()
 
 # Check the curvature computation
@@ -61,7 +61,7 @@ theta_start = 1/6*np.pi                 # Start angle
 theta_end = np.pi                       # End angle
 
 # Create and plot the circular arc
-my_circular_arc = NurbsCircularArc(O, X, Y , R, theta_start, theta_end)
+my_circular_arc = CircularArc(O, X, Y , R, theta_start, theta_end)
 my_circular_arc.plot()
 
 # Check the curvature computation
