@@ -1,2 +1,2 @@
 # Ignore project files
-nurbspy/__pycache__/
+__pycache__/
