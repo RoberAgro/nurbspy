@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 
 """ Example showing how to compute the derivatives of a NURBS curve and validation against finite differences """
 

@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 
 """ Example showing how to combine several NURBS curves into a single NURBS curve
     The NURBS curve must be of the same order to merge them

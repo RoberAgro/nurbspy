@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 
 """ Example showing how to create an extruded NURBS surface (general cylinder) """
 

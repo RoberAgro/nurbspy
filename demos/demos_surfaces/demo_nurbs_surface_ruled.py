@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 
 """ Example showing how to create a ruled NURBS surface """
 

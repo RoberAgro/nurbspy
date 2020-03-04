@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 
 """ Example showing how to represent circular arcs using NURBS curves """
 

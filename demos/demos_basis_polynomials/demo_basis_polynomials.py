@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 
 """ Example showing how to compute a family of basis polynomials """
 

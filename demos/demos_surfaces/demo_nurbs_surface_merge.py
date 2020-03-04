@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 
 """ Example showing how to combine several NURBS surfaces into a single NURBS surface
     The NURBS surface must be of the same order to merge them
