@@ -116,7 +116,7 @@ If the installation was succesful, you should be able to see the Bézier curve w
 <p style="margin-bottom:0.5cm;"> </p>
 
 
-Check out the `demos_curves/` directory to see more examples showing the capabilities of the library and how to use them.
+Check out the [curve demos](./demos/demos_curves) directory to see more examples showing the capabilities of the library and how to use them.
 
 
 ### NURBS surfaces
@@ -165,7 +165,7 @@ If the installation was succesful, you should be able to see the Bézier surface
 <p style="margin-bottom:0.0cm;"> </p>
 
 
-Check out the `demos_surfaces/` directory to see more examples showing the capabilities of the library and how to use them.
+Check out the [surface demos](./demos/demos_surfaces) directory to see more examples showing the capabilities of the library and how to use them.
 
 
 ## Contact information
