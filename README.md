@@ -8,7 +8,11 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
  
  <p style="margin-bottom:1cm;"> </p>
 <p align="center">
-        <img src="docs/images/python_logo.svg" height="300" width="300"/>
+        <img src="docs/images/python_logo.svg" height="200" width="600"/>
+	&emsp; &emsp; &emsp; &emsp; &emsp;
+	<img src="docs/images/numpy_logo.svg" height="200" width="600"/>
+	&emsp; &emsp; &emsp; &emsp; &emsp;
+	<img src="docs/images/numba_logo.svg" height="200" width="600"/>
 </p>
 <p style="margin-bottom:1cm;"> </p>
 
@@ -105,7 +109,7 @@ If the installation was succesful, you should be able to see the Bézier curve w
 
 <p style="margin-bottom:1cm;"> </p>
 <p align="center">
-        <img src="docs/images/curve_example.svg" height="300" width="300"/>
+        <img src="docs/images/curve_example.svg" height="450" width="450"/>
 </p>
 <p style="margin-bottom:1cm;"> </p>
 
@@ -155,9 +159,10 @@ If the installation was succesful, you should be able to see the Bézier surface
 
 <p style="margin-bottom:1cm;"> </p>
 <p align="center">
-        <img src="docs/images/suface_example.svg" height="300" width="300"/>
+        <img src="docs/images/surface_example.svg" height="450" width="450"/>
 </p>
 <p style="margin-bottom:1cm;"> </p>
+
 
 Check out the `demos_surfaces/` directory to see more examples showing the capabilities of the library and how to use them.
 
