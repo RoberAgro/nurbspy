@@ -10,10 +10,9 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 
 <p style="margin-bottom:2cm;"> </p>
 <p align="center">
-        <img src="docs/images/python_logo.svg" height="130" width="450"/>
+        <img src="docs/images/python_logo.svg" height="100" width="350"/>
 </p>
 <p style="margin-bottom:0cm;"> </p>
-
  
 <p style="margin-bottom:0cm;"> </p>
 <p align="center">
