@@ -8,12 +8,12 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 `nurbspy` aims to be a simple NURBS library, not a fully fledged CAD kernel. If you need a powerful, open source CAD kernel we recommend you to check out the C++[OpenCascade](https://www.opencascade.com/doc/occt-7.4.0/overview/html/index.html) library. If you feel that OpenCascade is too complex or you are not sure how to start using it, we hope that [this repository](https://github.com/RoberAgro/primer_open_cascade) might be useful for you!
 
 
-<p style="margin-bottom:2cm;"> </p>
+<p style="margin-top:1cm;"> </p>
 <p align="center">
-        <img src="docs/images/python_logo.svg" height="100" width="350"/>
+        <img src="docs/images/python_logo.svg" height="120" width="400"/>
 <p style="margin-bottom:0cm;"> </p>
  
-<p style="margin-bottom:0cm;"> </p>
+<p style="margin-top:0cm;"> </p>
 <p align="center">
 	<img src="docs/images/numpy_logo.svg" height="100" width="250"/>
 	&emsp; &emsp; &emsp;
@@ -52,11 +52,10 @@ In addition, `nurbspy` provides the following capabilities to create and use NUR
 - Methods to compute u- and v-isoparametic curves
 - Methods to visualize the surface using the Matplotlib library
 
-In addition,  `nurbspy` can work with real and complex data types natively. This allows to compute accurate shape derivatives using the complex step method and avoid the numerical error incurred by finite-difference derivative approximations. Shape sensitivity information is necessary to solve shape optimization problems with many design variables using gradient based-optimization algorithms. To our knowledge, `nurbspy` is the only Python package that provides the flexibility to work with complex numbers right away.
+In addition,  `nurbspy` can work with real and complex data types natively. This allows to compute accurate (down to [machine epsilon!](https://en.wikipedia.org/wiki/Machine_epsilon)) shape derivatives using the [complex step method](https://blogs.mathworks.com/cleve/2013/10/14/complex-step-differentiation/) and avoid the numerical error incurred by finite-difference derivative approximations. This shape sensitivity information is necessary to solve shape optimization problems with many design variables using gradient based-optimization algorithms. To our knowledge, `nurbspy` is the only Python package that provides the flexibility to work with complex numbers right away.
 
 
 ## Installation
-
 
 `nurbspy` has the following mandatory runtime dependencies:
 
@@ -79,14 +78,14 @@ In addition `nurbspy` uses `pytest` for local tests.
 	conda install nurbspy
 
 
-You can verify that `nurbspy` was successfully installed by running the provided below.
+You can verify that `nurbspy` was successfully installed by running the examples provided below.
 
 
 ## Minimum working examples
 
 ### NURBS curves
 
-NURBSpy can  be used to create Bézier, B-Spline and NURBS curves. The type of curve depends on the number of arguments used to initialize the class. As an example, the following code snippet can be used to generate a degree four Bézier curve in two dimensions
+`nurbspy` can  be used to create Bézier, B-Spline and NURBS curves. The type of curve depends on the arguments used to initialize the curve class. As an example, the following code snippet can be used to generate a degree four Bézier curve in two dimensions
 
 ```py
 # Import packages
@@ -122,7 +121,7 @@ Check out the `demos_curves/` directory to see more examples showing the capabil
 
 ### NURBS surfaces
 
-The following code snippet shows how to generate a simple Bézier patch of degree 2 in the u-direction and degree 1 in the v-direction:
+Similarly, `nurbspy` can  be used to create Bézier, B-Spline and NURBS surfaces. The type of surface depends on the arguments used to initialize the curve class. As an example, the following code snippet can be used to generate a simple Bézier surface of degree 3 in the u-direction and degree 2 in the v-direction:
 
 ```py
 # Import packages
@@ -160,7 +159,7 @@ plt.show()
 
 If the installation was succesful, you should be able to see the Bézier surface when you execute the previous code snippet.
 
-<p style="margin-bottom:0.0cm;"> </p>
+<p style="margin-top:0.0cm;"> </p>
 <p align="center">
         <img src="docs/images/surface_example.svg" height="500" width="500"/>
 <p style="margin-bottom:0.0cm;"> </p>
@@ -170,6 +169,5 @@ Check out the `demos_surfaces/` directory to see more examples showing the capab
 
 
 ## Contact information
-`nurbspy` was developed by PhD candidate [Roberto Agromayor](https://www.ntnu.edu/employees/roberto.agromayor) under the supervision of Associate Professor [Lars O. Nord](https://www.ntnu.edu/employees/lars.nord) at the [Norwegian University of Science and Technology (NTNU)](https://www.ntnu.no/) as part of his work on turbomachinery shape optimization.
 
-Please, drop us an email to [roberto.agromayor@ntnu.no](mailto:roberto.agromayor@ntnu.no) if you have questions about the code or you have a bug to report.
+`nurbspy` was developed by [Roberto Agromayor](https://www.ntnu.edu/employees/roberto.agromayor) under the supervision of Associate Professor [Lars O. Nord](https://www.ntnu.edu/employees/lars.nord) at the [Norwegian University of Science and Technology (NTNU)](https://www.ntnu.no/) as part of his PhD on turbomachinery shape optimization. Please, drop us an email to [roberto.agromayor@ntnu.no](mailto:roberto.agromayor@ntnu.no) if you have questions about the code or you have a bug to report!
