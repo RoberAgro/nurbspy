@@ -2,13 +2,13 @@
 # Import packages
 # -------------------------------------------------------------------------------------------------------------------- #
 import numpy as np
+import scipy.special
+import scipy.integrate
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 from mpl_toolkits    import mplot3d
-from scipy.integrate import fixed_quad
-from scipy.special   import binom
-from .nurbs_basis    import compute_basis_polynomials, compute_basis_polynomials_derivatives
+from .nurbs_basis_functions    import compute_basis_polynomials, compute_basis_polynomials_derivatives
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -20,18 +20,18 @@ class NurbsCurve:
 
         Parameters
         ----------
-        P : ndarray with shape (ndim, n+1)
+        control_points : ndarray with shape (ndim, n+1)
             Array containing the coordinates of the control points
             The first dimension of ´P´ spans the coordinates of the control points (any number of dimensions)
             The second dimension of ´P´ spans the u-direction control points (0,1,...,n)
 
-        W : ndarray with shape (n+1,)
+        weights : ndarray with shape (n+1,)
             Array containing the weight of the control points
 
-        p : int
+        degree : int
             Degree of the basis polynomials
 
-        U : ndarray with shape (r+1=n+p+2,)
+        knots : ndarray with shape (r+1=n+p+2,)
             The knot vector in the u-direction
             Set the multiplicity of the first and last entries equal to ´p+1´ to obtain a clamped NURBS
 
@@ -424,7 +424,7 @@ class NurbsCurve:
             # Update the numerator of equation 4.8 recursively
             temp_numerator = A_ders[[order], ...]
             for i in range(1, order+1):
-                temp_numerator -= binom(order, i) * w_ders[[i], ...] * nurbs_derivatives[[order-i], ...]
+                temp_numerator -= scipy.special.binom(order, i) * w_ders[[i], ...] * nurbs_derivatives[[order-i], ...]
 
             # Compute the k-th order NURBS curve derivative
             nurbs_derivatives[order, ...] = temp_numerator/w_ders[[0], ...]
@@ -671,6 +671,7 @@ class NurbsCurve:
         """
 
         # Compute the curve derivatives
+        u = np.asarray(u)
         dC = self.compute_nurbs_derivatives(self.P, self.W, self.p, self.U, u, up_to_order=1)[1, ...]
 
         # Compute the normal vector
@@ -706,6 +707,7 @@ class NurbsCurve:
         """
 
         # Compute the curve derivatives
+        u = np.asarray(u)
         dC, ddC = self.compute_nurbs_derivatives(self.P, self.W, self.p, self.U, u, up_to_order=2)[[1, 2], ...]
 
         # Compute the curvature
@@ -745,6 +747,7 @@ class NurbsCurve:
         """
 
         # Compute the curve derivatives
+        u = np.asarray(u)
         dC, ddC, dddC = self.compute_nurbs_derivatives(self.P, self.W, self.p, self.U, u, up_to_order=3)[[1, 2, 3], ...]
 
         # Compute the torsion
@@ -794,7 +797,7 @@ class NurbsCurve:
             return dLdu
 
         # Compute the arc length of C(t) in the interval [u1, u2] by numerical integration
-        arclength = fixed_quad(get_arclegth_differential, u1, u2, n=10)[0]
+        arclength = scipy.integrate.fixed_quad(get_arclegth_differential, u1, u2, n=10)[0]
 
         return arclength
 

@@ -6,7 +6,7 @@
 # Importing packages
 # -------------------------------------------------------------------------------------------------------------------- #
 import numpy as np
-import nurbspy as nbp
+import nurbspy as nrb
 import matplotlib.pyplot as plt
 
 
@@ -30,9 +30,9 @@ Nu = 1000
 u = np.linspace(0.00 + hh, 1.00 - hh, Nu)       # Make sure that the limits [0, 1] also work when making changes
 
 # Compute the basis polynomials and derivatives
-N_basis   = nbp.compute_basis_polynomials(n, p, U, u)
-dN_basis  = nbp.compute_basis_polynomials_derivatives(n, p, U, u, derivative_order=1)
-ddN_basis = nbp.compute_basis_polynomials_derivatives(n, p, U, u, derivative_order=2)
+N_basis   = nrb.compute_basis_polynomials(n, p, U, u)
+dN_basis  = nrb.compute_basis_polynomials_derivatives(n, p, U, u, derivative_order=1)
+ddN_basis = nrb.compute_basis_polynomials_derivatives(n, p, U, u, derivative_order=2)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -124,5 +124,3 @@ plt.show()
 # c = +1*compute_basis_polynomials(n, p, U, u + h)
 # ddN_fd = (a+b+c)/h**2
 # print('The two-norm of the second derivative error is  :  ', np.sum((ddN_basis-ddN_fd)**2)**(1/2)/Nu)
-
-

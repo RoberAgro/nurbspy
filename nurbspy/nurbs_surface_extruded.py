@@ -2,6 +2,7 @@
 # Import packages
 # -------------------------------------------------------------------------------------------------------------------- #
 import numpy as np
+
 from .nurbs_surface import NurbsSurface
 
 

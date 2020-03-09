@@ -1,5 +1,5 @@
-# # Load all modules from the library
-from .nurbs_basis              import *
+# Import geometry modules
+from .nurbs_basis_functions    import *
 from .nurbs_curve              import *
 from .nurbs_curve_circular_arc import *
 from .nurbs_surface            import *

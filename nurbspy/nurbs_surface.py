@@ -2,13 +2,13 @@
 # Import packages
 # -------------------------------------------------------------------------------------------------------------------- #
 import numpy as np
+import scipy.special
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 from mpl_toolkits  import mplot3d
-from scipy.special import binom
 from .nurbs_curve  import NurbsCurve
-from .nurbs_basis  import compute_basis_polynomials, compute_basis_polynomials_derivatives
+from .nurbs_basis_functions  import compute_basis_polynomials, compute_basis_polynomials_derivatives
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -20,28 +20,28 @@ class NurbsSurface:
 
         Parameters
         ----------
-        P : ndarray with shape (ndim, n+1, m+1)
+        control_points : ndarray with shape (ndim, n+1, m+1)
             Array containing the coordinates of the control points
             The first dimension of ´P´ spans the coordinates of the control points (any number of dimensions)
             The second dimension of ´P´ spans the u-direction control points (0, 1, ..., n)
             The third dimension of ´P´ spans the v-direction control points (0, 1, ..., m)
 
-        W : ndarray with shape (n+1, m+1)
+        weights : ndarray with shape (n+1, m+1)
             Array containing the weight of the control points
             The first dimension of ´W´ spans the u-direction control points weights (0, 1, ..., n)
             The second dimension of ´W´ spans the v-direction control points weights (0, 1, ..., m)
 
-        p : int
+        u_degree : int
             Degree of the u-basis polynomials
 
-        q : int
+        v_degree : int
             Degree of the v-basis polynomials
 
-        U : ndarray with shape (r+1=n+p+2,)
+        u_knots : ndarray with shape (r+1=n+p+2,)
             Knot vector in the u-direction
             Set the multiplicity of the first and last entries equal to ´p+1´ to obtain a clamped spline
 
-        V : ndarray with shape (s+1=m+q+2,)
+        v_knots : ndarray with shape (s+1=m+q+2,)
             Knot vector in the v-direction
             Set the multiplicity of the first and last entries equal to ´q+1´ to obtain a clamped spline
 
@@ -210,7 +210,8 @@ class NurbsSurface:
         return S
 
 
-    def compute_nurbs_coordinates(self, P, W, p, q, U, V, u, v):
+    @staticmethod
+    def compute_nurbs_coordinates(P, W, p, q, U, V, u, v):
 
         """ Evaluate the coordinates of the NURBS surface corresponding to the (u,v) parametrization
 
@@ -495,16 +496,16 @@ class NurbsSurface:
 
                 # Summation j=0 and point_index=1:k
                 for i in range(1, k + 1):
-                    temp_numerator -= binom(k, i)*w_ders[[i], [0], ...]*nurbs_derivatives[[k-i], [L], ...]
+                    temp_numerator -= scipy.special.binom(k, i)*w_ders[[i], [0], ...]*nurbs_derivatives[[k-i], [L], ...]
 
                 # Summation point_index=0 and j=1:L
                 for j in range(1, L + 1):
-                    temp_numerator -= binom(L, j)*w_ders[[0], [j], ...]*nurbs_derivatives[[k], [L-j], ...]
+                    temp_numerator -= scipy.special.binom(L, j)*w_ders[[0], [j], ...]*nurbs_derivatives[[k], [L-j], ...]
 
                 # Summation point_index=1:k and j=1:L
                 for i in range(1, k+1):
                     for j in range(1, L+1):
-                        temp_numerator -= binom(k, i) * binom(L, j)* w_ders[[i], [j], ...] * nurbs_derivatives[[k-i], [L-j], ...]
+                        temp_numerator -= scipy.special.binom(k, i) * scipy.special.binom(L, j)* w_ders[[i], [j], ...] * nurbs_derivatives[[k-i], [L-j], ...]
 
                 # Compute the (k,L)-th order NURBS surface partial derivative
                 nurbs_derivatives[k, L, ...] = temp_numerator/w_ders[[0], [0], ...]
@@ -627,7 +628,7 @@ class NurbsSurface:
         # Compute the array of control points in homogeneous space
         n_dim, nn, mm = np.shape(P_w)
         n = nn - 1
-        N_basis_u = compute_basis_polynomials(n, self.p, self.U, u0).flatten()
+        N_basis_u = compute_basis_polynomials(n, self.p, self.U, float(u0)).flatten()   # use float() to avoid problem with numba and integers
         N_basis_u = N_basis_u[np.newaxis, :, np.newaxis]
         Q_w = np.sum(P_w * N_basis_u, axis=1)
 
@@ -665,7 +666,7 @@ class NurbsSurface:
         # Compute the array of control points
         n_dim, nn, mm = np.shape(P_w)
         m = mm - 1
-        N_basis_v = compute_basis_polynomials(m, self.q, self.V, v0).flatten()
+        N_basis_v = compute_basis_polynomials(m, self.q, self.V, float(v0)).flatten()   # use float() to avoid problem with numba and integers
         N_basis_v = N_basis_v[np.newaxis, np.newaxis, :]
         Q_w = np.sum(P_w * N_basis_v, axis=2)
 
@@ -863,7 +864,7 @@ class NurbsSurface:
     def plot(self, fig=None, ax = None,
              surface=True, surface_color='blue', colorbar=False,
              boundary=True, control_points=False, normals=False, axis_off=False, ticks_off=False,
-             Nu=50, Nv=50):
+             Nu=50, Nv=50, isocurves_u=None, isocurves_v=None):
 
         # Prepare the plot
         if fig is None:
@@ -904,6 +905,10 @@ class NurbsSurface:
         if boundary:       self.plot_boundary(fig, ax)
         if control_points: self.plot_control_points(fig, ax)
         if normals:        self.plot_normals(fig, ax)
+        if isocurves_u:
+            self.plot_isocurve_u(fig, ax, u_values=np.linspace(0, 1, isocurves_u))
+        if isocurves_v:
+              self.plot_isocurve_v(fig, ax, v_values=np.linspace(0, 1, isocurves_v))
 
         # Set the scaling of the axes
         self.rescale_plot(fig, ax)
@@ -1138,7 +1143,7 @@ class NurbsSurface:
         # Represent the curvature as a carpet plot or as a surface plot
         ax.set_xlabel('$u$', fontsize=11, color='k', labelpad=10)
         ax.set_ylabel('$v$', fontsize=11, color='k', labelpad=10)
-        ax.set_zlabel('$\kappa$' + ' ' + curvature_type, fontsize=11, color='k', labelpad=20)
+        ax.set_zlabel(r'$\kappa$' + ' ' + curvature_type, fontsize=11, color='k', labelpad=20)
         curvature = np.reshape(curvature, (Nu, Nv))
         ax.plot_surface(uu, vv, curvature,
                         color='blue',
