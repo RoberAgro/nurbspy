@@ -70,12 +70,14 @@ In addition `nurbspy` uses `pytest` for local tests.
 `nurbspy` is available on Linux via the [pip](https://pip.pypa.io/en/stable/) package manager. The installation with pip is straightfoward:
 
 	pip install nurbspy
+	not yet available :(
 
 
 `nurbspy` is also available on Linux via the [conda](https://pip.pypa.io/en/stable/) package manager thanks to the infrastructure provided by [conda-forge](https://conda-forge.org/). In order to install `nurbspy` via conda you need to add `conda-forge` to your channels and then use the install command
 
 	conda config --add channels conda-forge
 	conda install nurbspy
+	not yet available :(
 
 
 You can verify that `nurbspy` was successfully installed by running the examples provided below.
