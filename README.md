@@ -11,12 +11,11 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 <p style="margin-bottom:2cm;"> </p>
 <p align="center">
         <img src="docs/images/python_logo.svg" height="100" width="350"/>
-</p>
 <p style="margin-bottom:0cm;"> </p>
  
 <p style="margin-bottom:0cm;"> </p>
 <p align="center">
-	<img src="docs/images/numpy_logo.svg" height="120" width="300"/>
+	<img src="docs/images/numpy_logo.svg" height="100" width="250"/>
 	&emsp; &emsp; &emsp;
 	<img src="docs/images/numba_logo.svg" height="100" width="300"/>
 </p>
