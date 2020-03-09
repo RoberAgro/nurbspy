@@ -15,8 +15,8 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
  
 <p style="margin-bottom:0cm;"> </p>
 <p align="center">
-	<img src="docs/images/numpy_logo.svg" height="100" width="300"/>
-	&emsp;
+	<img src="docs/images/numpy_logo.svg" height="120" width="300"/>
+	&emsp; &emsp; &emsp;
 	<img src="docs/images/numba_logo.svg" height="100" width="300"/>
 </p>
 <p style="margin-bottom:0cm;"> </p>
