@@ -6,13 +6,18 @@
 The classes and methods were inspired by the algorithms presented in [The NURBS Book](https://doi.org/10.1007/978-3-642-59223-2) and the code was implemented using vectorized [Numpy](https://numpy.org/) functions and [Numba's](http://numba.pydata.org/) just-in-time compilation decorators to achieve C-like speed.
  
  
- <p style="margin-bottom:1cm;"> </p>
+  <p style="margin-bottom:1cm;"> </p>
 <p align="center">
         <img src="docs/images/python_logo.svg" height="130" width="450"/>
-	&emsp;
+</p>
+<p style="margin-bottom:0cm;"> </p>
+
+ 
+<p style="margin-bottom:0cm;"> </p>
+<p align="center">
 	<img src="docs/images/numpy_logo.svg" height="100" width="300"/>
 	&emsp;
-	<img src="docs/images/numba_logo.svg" height="200" width="300"/>
+	<img src="docs/images/numba_logo.svg" height="100" width="300"/>
 </p>
 <p style="margin-bottom:0cm;"> </p>
 
