@@ -2,18 +2,16 @@
 
 
 ## Description
-`nurbspy` is a lightweight, object-oriented library for Non-Uniform Rational Basis Spline (NURBS) curves and surfaces implemented in Python. 
-The library was inspired by the equations and algorithms presented in [The NURBS Book](https://doi.org/10.1007/978-3-642-59223-2) and it was implemented using vectorized [Numpy](https://numpy.org/) functions and [Numba's](http://numba.pydata.org/) just-in-time compilation decorators to achieve C-like speed.
+`nurbspy` is a lightweight Python library for Non-Uniform Rational Basis Spline (NURBS) curves and surfaces.
+The classes and methods were inspired by the algorithms presented in [The NURBS Book](https://doi.org/10.1007/978-3-642-59223-2) and they were implemented using vectorized [Numpy](https://numpy.org/) functions and [Numba's](http://numba.pydata.org/) just-in-time compilation decorators to achieve C-like speed.
  
- Note that `nurbspy` aims to be a easy-to-install and easy-to-use NURBS library, but not a fully fledged CAD kernel. You can check out [OpenCascade](https://www.opencascade.com/doc/occt-7.4.0/overview/html/index.html) if you need a powerful, open source CAD kernel.
-
-
+ `nurbspy` aims to be a simple NURBS library, not a fully fledged CAD kernel. If you need a powerful, open source CAD kernel we recommend you to check out the C++[OpenCascade](https://www.opencascade.com/doc/occt-7.4.0/overview/html/index.html) library. If you feel that OpenCascade is too complex or you are not sure how to start using it, we hope that [this repository](https://github.com/RoberAgro/primer_open_cascade) might be useful for you!
 
 ## Capabilities
 
 
 
-`nurbspy` has the following features to work with NURBS curves:
+`nurbspy` has the following features to create and use NURBS curves:
 
 - Constructors for rational and non-rational Bézier and B-Spline curves
 - Methods to evaluate curve coordinates
@@ -24,7 +22,7 @@ The library was inspired by the equations and algorithms presented in [The NURBS
 - Methods to visualize the curve using the Matplotlib library
 
 
-In addition, `nurbspy` provides the following capabilities to work with NURBS surfaces:
+In addition, `nurbspy` provides the following capabilities to create and use NURBS surfaces:
 
 
 - Constructors for rational and non-rational Bézier and B-Spline surfaces
