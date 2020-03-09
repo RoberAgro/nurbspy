@@ -6,7 +6,7 @@
 The classes and methods were inspired by the algorithms presented in [The NURBS Book](https://doi.org/10.1007/978-3-642-59223-2) and the code was implemented using vectorized [Numpy](https://numpy.org/) functions and [Numba's](http://numba.pydata.org/) just-in-time compilation decorators to achieve C-like speed.
  
  
-  <p style="margin-bottom:1cm;"> </p>
+  <p style="margin-bottom:2cm;"> </p>
 <p align="center">
         <img src="docs/images/python_logo.svg" height="130" width="450"/>
 </p>
@@ -19,7 +19,7 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 	&emsp; &emsp; &emsp;
 	<img src="docs/images/numba_logo.svg" height="100" width="300"/>
 </p>
-<p style="margin-bottom:0cm;"> </p>
+<p style="margin-bottom:1cm;"> </p>
 
 
  `nurbspy` aims to be a simple NURBS library, not a fully fledged CAD kernel. If you need a powerful, open source CAD kernel we recommend you to check out the C++[OpenCascade](https://www.opencascade.com/doc/occt-7.4.0/overview/html/index.html) library. If you feel that OpenCascade is too complex or you are not sure how to start using it, we hope that [this repository](https://github.com/RoberAgro/primer_open_cascade) might be useful for you!
@@ -162,11 +162,10 @@ plt.show()
 
 If the installation was succesful, you should be able to see the Bézier surface when you execute the previous code snippet.
 
-<p style="margin-bottom:0.5cm;"> </p>
+<p style="margin-bottom:0.0cm;"> </p>
 <p align="center">
         <img src="docs/images/surface_example.svg" height="500" width="500"/>
-</p>
-<p style="margin-bottom:0.5cm;"> </p>
+<p style="margin-bottom:0.0cm;"> </p>
 
 
 Check out the `demos_surfaces/` directory to see more examples showing the capabilities of the library and how to use them.
