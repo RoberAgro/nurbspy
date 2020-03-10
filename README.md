@@ -76,7 +76,7 @@ In addition `nurbspy` uses `pytest` for local tests.
 
 	conda install --channel roberagro nurbspy
 
-You can verify that `nurbspy` was installed successfully with this minimum Python script:
+You can verify that `nurbspy` was installed successfully with this minimal Python script:
 
 ```py
 import nurbspy
