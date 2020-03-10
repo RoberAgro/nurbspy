@@ -219,9 +219,9 @@ def test_basis_function_second_derivative_cfd():
 # -------------------------------------------------------------------------------------------------------------------- #
 # Check the functions manually
 # -------------------------------------------------------------------------------------------------------------------- #
-test_basis_function_example_1()
-test_partition_of_unity_property()
-test_basis_function_zeroth_derivative()
-test_basis_function_first_derivative_cs()
-test_basis_function_first_derivative_cfd()
-test_basis_function_second_derivative_cfd()
+# test_basis_function_example_1()
+# test_partition_of_unity_property()
+# test_basis_function_zeroth_derivative()
+# test_basis_function_first_derivative_cs()
+# test_basis_function_first_derivative_cfd()
+# test_basis_function_second_derivative_cfd()
