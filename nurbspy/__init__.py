@@ -8,3 +8,6 @@ from .nurbs_surface_ruled      import *
 from .nurbs_surface_extruded   import *
 from .nurbs_surface_revolution import *
 from .nurbs_surface_coons      import *
+
+# Import minimum working examples
+from .examples                 import *

@@ -10,14 +10,14 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 
 <p style="margin-top:1cm;"> </p>
 <p align="center">
-        <img src="https://github.com/RoberAgro/nurbspy/blob/master/docs/images/python_logo.svg" height="120" width="400"/>
+        <img src="./docs/images/python_logo.svg" height="120" width="400"/>
 <p style="margin-bottom:0cm;"> </p>
  
 <p style="margin-top:0cm;"> </p>
 <p align="center">
-	<img src="https://github.com/RoberAgro/nurbspy/blob/master/docs/images/numpy_logo.svg" height="100" width="250"/>
+	<img src="./docs/images/numpy_logo.svg" height="100" width="250"/>
 	&emsp; &emsp; &emsp;
-	<img src="https://github.com/RoberAgro/nurbspy/blob/master/docs/images/numba_logo.svg" height="100" width="300"/>
+	<img src="./docs/images/numba_logo.svg" height="100" width="300"/>
 </p>
 <p style="margin-bottom:1cm;"> </p>
 
@@ -72,15 +72,16 @@ In addition `nurbspy` uses `pytest` for local tests.
 	pip install nurbspy
 
 
-`nurbspy` is also available on Linux via the [conda](https://pip.pypa.io/en/stable/) package manager thanks to the infrastructure provided by [conda-forge](https://conda-forge.org/). In order to install `nurbspy` via conda you need to add `conda-forge` to your channels and then use the install command
+`nurbspy` is also available on Linux via the [conda](https://pip.pypa.io/en/stable/). In order to install `nurbspy` via conda you need to add `roberagro` to your channels when you use the install command
 
-	conda config --add channels conda-forge
-	conda install nurbspy
-	not yet available :(
+	conda install --channel roberagro nurbspy
 
+You can verify that `nurbspy` was installed successfully with this minimum Python script:
 
-You can verify that `nurbspy` was successfully installed by running the examples provided below.
-
+```py
+import nurbspy
+nurbspy.minimum_example.run()
+```
 
 ## Minimum working examples
 

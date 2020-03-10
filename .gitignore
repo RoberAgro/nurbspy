@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Roberto's Conda distribution
+conda_dist/
+
 # Distribution / packaging
 .Python
 build/
