@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="nurbspy",
-    version="0.0.1",
+    version="0.0.2",
     author="Roberto Agromayor",
     author_email="rober.agro@gmail.com",
     description="A lightweight library for NURBS curves and surfaces",
@@ -18,6 +18,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=['numpy', 'scipy', 'matplotlib', 'numba']
+    install_requires=['numpy', 'scipy', 'matplotlib', 'numba'],
     python_requires='>=3.6',
 )
