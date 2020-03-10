@@ -9,5 +9,5 @@ from .nurbs_surface_extruded   import *
 from .nurbs_surface_revolution import *
 from .nurbs_surface_coons      import *
 
-# Import minimum working examples
-from .examples                 import *
+# Import minimum working example
+from .minimum_example          import *
