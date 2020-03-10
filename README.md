@@ -112,12 +112,12 @@ If the installation was succesful, you should be able to see the Bézier curve w
 
 <p style="margin-bottom:0.5cm;"> </p>
 <p align="center">
-        <img src="docs/images/curve_example.svg" height="400" width="400"/>
+        <img src="https://github.com/RoberAgro/nurbspy/blob/master/docs/images/curve_example.svg" height="400" width="400"/>
 </p>
 <p style="margin-bottom:0.5cm;"> </p>
 
 
-Check out the [curve demos](https://github.com/RoberAgro/nurbspy/blob/master/docs/images/curve_example.svg) directory to see more examples showing the capabilities of the library and how to use them.
+Check out the [curve demos](./demos/demos_curves) directory to see more examples showing the capabilities of the library and how to use them.
 
 
 ### NURBS surfaces
