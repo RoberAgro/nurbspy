@@ -10,14 +10,14 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 
 <p style="margin-top:1cm;"> </p>
 <p align="center">
-        <img src="docs/images/python_logo.svg" height="120" width="400"/>
+        <img src="https://github.com/RoberAgro/nurbspy/raw/master/docs/images/python_logo.svg" height="120" width="400"/>
 <p style="margin-bottom:0cm;"> </p>
  
 <p style="margin-top:0cm;"> </p>
 <p align="center">
-	<img src="docs/images/numpy_logo.svg" height="100" width="250"/>
+	<img src="https://github.com/RoberAgro/nurbspy/raw/master/docs/images/numpy_logo.svg" height="100" width="250"/>
 	&emsp; &emsp; &emsp;
-	<img src="docs/images/numba_logo.svg" height="100" width="300"/>
+	<img src="https://github.com/RoberAgro/nurbspy/raw/master/docs/images/numba_logo.svg" height="100" width="300"/>
 </p>
 <p style="margin-bottom:1cm;"> </p>
 
@@ -117,7 +117,7 @@ If the installation was succesful, you should be able to see the Bézier curve w
 <p style="margin-bottom:0.5cm;"> </p>
 
 
-Check out the [curve demos](./demos/demos_curves) directory to see more examples showing the capabilities of the library and how to use them.
+Check out the [curve demos](https://github.com/RoberAgro/nurbspy/raw/master/docs/images/curve_example.svg) directory to see more examples showing the capabilities of the library and how to use them.
 
 
 ### NURBS surfaces
@@ -162,7 +162,7 @@ If the installation was succesful, you should be able to see the Bézier surface
 
 <p style="margin-top:0.0cm;"> </p>
 <p align="center">
-        <img src="docs/images/surface_example.svg" height="500" width="500"/>
+        <img src="https://github.com/RoberAgro/nurbspy/raw/master/docs/images/surface_example.svg" height="500" width="500"/>
 <p style="margin-bottom:0.0cm;"> </p>
 
 
