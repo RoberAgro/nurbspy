@@ -10,4 +10,4 @@ from .nurbs_surface_revolution import *
 from .nurbs_surface_coons      import *
 
 # Import minimum working example
-from .minimum_example          import *
+from .minimal_example          import *

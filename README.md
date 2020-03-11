@@ -4,7 +4,7 @@
 ## Description
 `nurbspy` is a Python package for Non-Uniform Rational Basis Spline (NURBS) curves and surfaces.
 The classes and methods were inspired by the algorithms presented in [The NURBS Book](https://doi.org/10.1007/978-3-642-59223-2) and the code was implemented using vectorized [Numpy](https://numpy.org/) functions and [Numba's](http://numba.pydata.org/) just-in-time compilation decorators to achieve C-like speed.
- 
+
 `nurbspy` aims to be a simple NURBS library, not a fully fledged CAD kernel. If you need a powerful, open source CAD kernel we recommend you to check out the C++ [OpenCascade](https://www.opencascade.com/doc/occt-7.4.0/overview/html/index.html) library. If you feel that OpenCascade is too complex or you are not sure how to start using it, [this repository](https://github.com/RoberAgro/primer_open_cascade) might be useful for you!
 
 
@@ -12,7 +12,7 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 <p align="center">
         <img src="./docs/images/python_logo.svg" height="120" width="400"/>
 <p style="margin-bottom:0cm;"> </p>
- 
+
 <p style="margin-top:0cm;"> </p>
 <p align="center">
 	<img src="./docs/images/numpy_logo.svg" height="100" width="250"/>
@@ -20,7 +20,6 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 	<img src="./docs/images/numba_logo.svg" height="100" width="300"/>
 </p>
 <p style="margin-bottom:1cm;"> </p>
-
 
 ## Capabilities
 
@@ -63,7 +62,7 @@ In addition,  `nurbspy` can work with real and complex data types natively. This
  - [scipy](https://www.scipy.org/) (scientific computing library)
  - [numba](http://numba.pydata.org/) (just-in-time Python compiler)
  - [matplotlib](https://matplotlib.org/) (visualization library)
- 
+
 In addition, `nurbspy` uses [pytest](https://docs.pytest.org/en/latest/) for local tests.
 
 
@@ -72,7 +71,7 @@ In addition, `nurbspy` uses [pytest](https://docs.pytest.org/en/latest/) for loc
 	pip install nurbspy
 
 
-`nurbspy` is also available on Linux via the [conda](https://pip.pypa.io/en/stable/) installer. In order to install `nurbspy` via conda you need to add `roberagro` to the list of available channels:
+`nurbspy` is also available on Linux via the [conda](https://docs.conda.io/en/latest/) installer. In order to install `nurbspy` via conda you need to add `roberagro` to the list of available channels:
 
 	conda install --channel roberagro nurbspy
 
@@ -113,10 +112,9 @@ If the installation was succesful, you should be able to see the Bézier curve w
 
 <p style="margin-bottom:0.5cm;"> </p>
 <p align="center">
-        <img src="https://github.com/RoberAgro/nurbspy/blob/master/docs/images/curve_example.svg" height="400" width="400"/>
+        <img src="./docs/images/curve_example.svg" height="400" width="400"/>
 </p>
 <p style="margin-bottom:0.5cm;"> </p>
-
 
 Check out the [curve demos](./demos/demos_curves) directory to see more examples showing the capabilities of the library and how to use them.
 
@@ -163,8 +161,9 @@ If the installation was succesful, you should be able to see the Bézier surface
 
 <p style="margin-top:0.0cm;"> </p>
 <p align="center">
-        <img src="https://github.com/RoberAgro/nurbspy/blob/master/docs/images/surface_example.svg" height="500" width="500"/>
+        <img src="./docs/images/surface_example.svg" height="500" width="500"/>
 <p style="margin-bottom:0.0cm;"> </p>
+
 
 
 Check out the [surface demos](./demos/demos_surfaces) directory to see more examples showing the capabilities of the library and how to use them.

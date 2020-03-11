@@ -1,4 +1,4 @@
-# NURBS curve minimum working example
+# NURBS curve minimal working example
 def run():
 
     # Import packages
