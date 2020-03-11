@@ -71,7 +71,7 @@ In addition, `nurbspy` uses [pytest](https://docs.pytest.org/en/latest/) for loc
 	pip install nurbspy
 
 
-`nurbspy` is also available on Linux via the [conda](https://docs.conda.io/en/latest/) installer. In order to install `nurbspy` via conda you need to add `roberagro` to the list of available channels:
+`nurbspy` is also available on Linux, Windows, and macOS via the [conda](https://docs.conda.io/en/latest/) installer. In order to install `nurbspy` via conda you need to add `roberagro` to the list of available channels:
 
 	conda install --channel roberagro nurbspy
 
