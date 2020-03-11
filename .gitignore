@@ -5,6 +5,7 @@ __pycache__/
 
 # Roberto's Conda distribution
 conda_dist/
+conda_out/
 
 # Distribution / packaging
 .Python
