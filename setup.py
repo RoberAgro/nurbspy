@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="nurbspy",
-    version="1.0.2",
+    version="1.0.3",
     author="Roberto Agromayor",
     author_email="rober.agro@gmail.com",
     description="A lightweight library for NURBS curves and surfaces",
