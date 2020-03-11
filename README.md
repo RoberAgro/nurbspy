@@ -2,7 +2,7 @@
 
 
 ## Description
-`nurbspy` is a Python package to create and work with Non-Uniform Rational Basis Spline (NURBS) curves and surfaces.
+`nurbspy` is a Python package for Non-Uniform Rational Basis Spline (NURBS) curves and surfaces.
 The classes and methods were inspired by the algorithms presented in [The NURBS Book](https://doi.org/10.1007/978-3-642-59223-2) and the code was implemented using vectorized [Numpy](https://numpy.org/) functions and [Numba's](http://numba.pydata.org/) just-in-time compilation decorators to achieve C-like speed.
  
 `nurbspy` aims to be a simple NURBS library, not a fully fledged CAD kernel. If you need a powerful, open source CAD kernel we recommend you to check out the C++ [OpenCascade](https://www.opencascade.com/doc/occt-7.4.0/overview/html/index.html) library. If you feel that OpenCascade is too complex or you are not sure how to start using it, [this repository](https://github.com/RoberAgro/primer_open_cascade) might be useful for you!
@@ -24,7 +24,7 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 
 ## Capabilities
 
-`nurbspy` has the following features to create and use NURBS curves:
+`nurbspy` has the following features for NURBS curves:
 
 - Constructors for rational and non-rational Bézier and B-Spline curves
 - Methods to evaluate curve coordinates
@@ -35,7 +35,7 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 - Methods to visualize the curve using the Matplotlib library
 
 
-In addition, `nurbspy` provides the following capabilities to create and use NURBS surfaces:
+In addition, `nurbspy` provides the following capabilities for NURBS surfaces:
 
 
 - Constructors for rational and non-rational Bézier and B-Spline surfaces
@@ -47,7 +47,7 @@ In addition, `nurbspy` provides the following capabilities to create and use NUR
 	- Coons surfaces
 - Methods to evaluate surface coordinates
 - Methods to evaluate arbitrary-order derivatives analytically
-- Methods to evaluate the unitary normal vector
+- Methods to evaluate the unitary normal vectors
 - Methods to evaluate the mean and Gaussian curvatures
 - Methods to compute u- and v-isoparametic curves
 - Methods to visualize the surface using the Matplotlib library
@@ -59,12 +59,12 @@ In addition,  `nurbspy` can work with real and complex data types natively. This
 
 `nurbspy` has the following mandatory runtime dependencies:
 
- - `numpy` (multidimensional array library)
- - `scipy` (scientific computing library)
- - `numba` (just-in-time Python compiler)
- - `matplotlib` (visualization library)
+ - [numpy](https://numpy.org/) (multidimensional array library)
+ - [scipy](https://www.scipy.org/) (scientific computing library)
+ - [numba](http://numba.pydata.org/) (just-in-time Python compiler)
+ - [matplotlib](https://matplotlib.org/) (visualization library)
  
-In addition `nurbspy` uses `pytest` for local tests.
+In addition, `nurbspy` uses [pytest](https://docs.pytest.org/en/latest/) for local tests.
 
 
 `nurbspy` is available on Linux via the [pip](https://pip.pypa.io/en/stable/) package manager. The installation with pip is straightfoward:
@@ -72,7 +72,7 @@ In addition `nurbspy` uses `pytest` for local tests.
 	pip install nurbspy
 
 
-`nurbspy` is also available on Linux via the [conda](https://pip.pypa.io/en/stable/). In order to install `nurbspy` via conda you need to add `roberagro` to your channels when you use the install command
+`nurbspy` is also available on Linux via the [conda](https://pip.pypa.io/en/stable/) installer. In order to install `nurbspy` via conda you need to add `roberagro` to the list of available channels:
 
 	conda install --channel roberagro nurbspy
 
@@ -80,14 +80,14 @@ You can verify that `nurbspy` was installed successfully with this minimal Pytho
 
 ```py
 import nurbspy
-nurbspy.minimum_example.run()
+nurbspy.minimal_example.run()
 ```
 
-## Minimum working examples
+## Minimal working examples
 
 ### NURBS curves
 
-`nurbspy` can  be used to create Bézier, B-Spline and NURBS curves. The type of curve depends on the arguments used to initialize the curve class. As an example, the following code snippet can be used to generate a degree four Bézier curve in two dimensions
+`nurbspy` can  be used to create Bézier, B-Spline and NURBS curves. The type of curve depends on the arguments used to initialize the curve class. As an example, the following piece of code can be used to generate a degree four Bézier curve in two dimensions:
 
 ```py
 # Import packages
@@ -123,7 +123,7 @@ Check out the [curve demos](./demos/demos_curves) directory to see more examples
 
 ### NURBS surfaces
 
-Similarly, `nurbspy` can  be used to create Bézier, B-Spline and NURBS surfaces. The type of surface depends on the arguments used to initialize the curve class. As an example, the following code snippet can be used to generate a simple Bézier surface of degree 3 in the u-direction and degree 2 in the v-direction:
+Similarly, `nurbspy` can  be used to create Bézier, B-Spline and NURBS surfaces. The type of surface depends on the arguments used to initialize the surface class. As an example, the following code snippet can be used to generate a simple Bézier surface of degree 3 in the u-direction and degree 2 in the v-direction:
 
 ```py
 # Import packages
@@ -159,7 +159,7 @@ bezierSurface.plot(control_points=True, isocurves_u=6, isocurves_v=6)
 plt.show()
 ```
 
-If the installation was succesful, you should be able to see the Bézier surface when you execute the previous code snippet.
+If the installation was succesful, you should be able to see the Bézier surface when you execute the previous script.
 
 <p style="margin-top:0.0cm;"> </p>
 <p align="center">
