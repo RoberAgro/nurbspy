@@ -76,8 +76,7 @@ pip install nurbspy
 `nurbspy` is also available on Linux, Windows, and macOS via the [conda](https://docs.conda.io/en/latest/) installer. In order to install `nurbspy` via conda you need to add `conda-forge` and `roberagro` to the list of available channels:
 
 ```shell
-conda config --add channels conda-forge roberagro
-conda install nurbspy
+conda install nurbspy --channel conda-forge --channel roberagro
 ```
 
 You can verify that `nurbspy` was installed successfully with this minimal Python script:
