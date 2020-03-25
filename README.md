@@ -82,6 +82,7 @@ conda install nurbspy --channel conda-forge --channel roberagro
 You can verify that `nurbspy` was installed successfully with this minimal Python script:
 
 ```python
+# Nurbspy minimal working example
 import nurbspy
 nurbspy.minimal_example.run()
 ```
