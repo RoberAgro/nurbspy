@@ -68,18 +68,28 @@ In addition, `nurbspy` uses [pytest](https://docs.pytest.org/en/latest/) for loc
 
 `nurbspy` is available on Linux via the [pip](https://pip.pypa.io/en/stable/) package manager. The installation with pip is straightfoward:
 
-	pip install nurbspy
+```bash
+pip install nurbspy
+```
 
 
 `nurbspy` is also available on Linux, Windows, and macOS via the [conda](https://docs.conda.io/en/latest/) installer. In order to install `nurbspy` via conda you need to add `roberagro` to the list of available channels:
 
-	conda install --channel roberagro nurbspy
+```shell
+conda install nurbspy --channel roberagro
+```
 
 You can verify that `nurbspy` was installed successfully with this minimal Python script:
 
-```py
+```python
 import nurbspy
 nurbspy.minimal_example.run()
+```
+
+or typing this one-liner on your terminal:
+
+```python
+python3 -c "import nurbspy; nurbspy.minimal_example.run()"
 ```
 
 ## Minimal working examples
@@ -88,7 +98,7 @@ nurbspy.minimal_example.run()
 
 `nurbspy` can  be used to create Bézier, B-Spline and NURBS curves. The type of curve depends on the arguments used to initialize the curve class. As an example, the following piece of code can be used to generate a degree four Bézier curve in two dimensions:
 
-```py
+```python
 # Import packages
 import numpy as np
 import nurbspy as nrb
@@ -123,7 +133,7 @@ Check out the [curve demos](./demos/demos_curves) directory to see more examples
 
 Similarly, `nurbspy` can  be used to create Bézier, B-Spline and NURBS surfaces. The type of surface depends on the arguments used to initialize the surface class. As an example, the following code snippet can be used to generate a simple Bézier surface of degree 3 in the u-direction and degree 2 in the v-direction:
 
-```py
+```python
 # Import packages
 import numpy as np
 import nurbspy as nrb
@@ -165,8 +175,11 @@ If the installation was succesful, you should be able to see the Bézier surface
 <p style="margin-bottom:0.0cm;"> </p>
 
 
-
 Check out the [surface demos](./demos/demos_surfaces) directory to see more examples showing the capabilities of the library and how to use them.
+
+## Mathematical background
+
+Check out the [Bézier](.docs/A_Briefing_on_Bezier_Curves_and_Surfaces.pdf), [B-Spline](.docs/A_Briefing_on_B_Spline_Curves_and_Surfaces.pdf), and [NURBS](.docs/A_Briefing_on_NURBS_Curves_and_Surfaces.pdf) notes if you want to learn more about the definition and mathematical properties of these curves and surfaces
 
 
 ## Contact information
