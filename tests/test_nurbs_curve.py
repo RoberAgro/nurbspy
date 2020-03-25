@@ -14,7 +14,7 @@ import nurbspy as nrb
 # -------------------------------------------------------------------------------------------------------------------- #
 # Prepare the NURBS curve test suite
 # -------------------------------------------------------------------------------------------------------------------- #
-def test_nurbs_curve_scalar_input():
+def test_nurbs_curve_float_input():
 
     """ Test the Bezier curve computation in scalar mode for real and complex input """
 
@@ -35,7 +35,28 @@ def test_nurbs_curve_scalar_input():
     assert np.sum((values_complex - np.asarray([0.5 + 0.5j, 0.5 + 0.5j])) ** 2) ** (1 / 2) < 1e-6
 
 
-def test_nurbs_curve_endpoint_property():
+def test_nurbs_curve_integer_input():
+
+    """ Test the Bezier curve computation in scalar mode for real and complex input """
+
+    # Define the array of control points
+    P = np.zeros((2, 2))
+    P[:, 0] = [0.00, 0.00]
+    P[:, 1] = [1.00, 1.00]
+
+    # Create the NURBS curve
+    bezierCurve = nrb.NurbsCurve(control_points=P)
+
+    # Check u=0
+    values_real = bezierCurve.get_value(u=0).flatten()
+    assert np.sum((values_real - np.asarray([0.0, 0.0])) ** 2) ** (1 / 2) < 1e-6
+
+    # Check u=1
+    values_real = bezierCurve.get_value(u=1).flatten()
+    assert np.sum((values_real - np.asarray([1.0, 1.0])) ** 2) ** (1 / 2) < 1e-6
+
+
+def test_nurbs_curve_endpoint_interpolation():
 
     """ Test the NURBS curve end-point interpolation property """
 
@@ -65,6 +86,69 @@ def test_nurbs_curve_endpoint_property():
     # Check the corner point values
     assert np.sum((nurbsCurve.get_value(u=0.00).flatten() - P[:,  0]) ** 2) ** (1 / 2) < 1e-6
     assert np.sum((nurbsCurve.get_value(u=1.00).flatten() - P[:, -1]) ** 2) ** (1 / 2) < 1e-6
+
+
+def test_nurbs_curve_endpoint_curvature():
+
+    """ Test the NURBS curve end-point curvature property """
+
+    # Define the array of control points
+    P = np.zeros((3,11))
+    P[:, 0]  = [0.00, 0.00, 0.00]
+    P[:, 1]  = [0.10, 0.50, 0.00]
+    P[:, 2]  = [0.20, 0.00, 0.50]
+    P[:, 3]  = [0.30, 0.50, 1.00]
+    P[:, 4]  = [0.40, 0.00, 0.50]
+    P[:, 5]  = [0.50, 0.50, 0.00]
+    P[:, 6]  = [0.60, 0.00, 0.50]
+    P[:, 7]  = [0.70, 0.50, 1.00]
+    P[:, 8]  = [0.80, 0.00, 0.50]
+    P[:, 9]  = [0.90, 0.00, 0.00]
+    P[:, 10] = [1.00, 0.00, 0.00]
+
+    # Maximum index of the control points (counting from zero)
+    n = np.shape(P)[1] - 1
+
+    # Define the array of control point weights
+    W = np.asarray([1, 2, 3, 2, 1, 2, 3, 2, 1, 2, 3])
+
+    # Define the order of the basis polynomials
+    p = 4
+
+    # Define the knot vector (clamped spline)
+    # p+1 zeros, n-p equispaced points between 0 and 1, and p+1 ones. In total r+1 points where r=n+p+1
+    U = np.concatenate((np.zeros(p), np.linspace(0, 1, n - p + 2), np.ones(p)))
+
+    # Create the NURBS curve
+    myCurve = nrb.NurbsCurve(control_points=P, weights=W, degree=p, knots=U)
+
+    # Get NURBS curve parameters
+    p = myCurve.p
+    U = myCurve.U
+    P = myCurve.P
+    W = myCurve.W
+    n = np.shape(P)[1] - 1
+
+    # Get the endpoint curvature numerically
+    curvature_1a = myCurve.get_curvature(u=0.00)[0]
+    curvature_1b = myCurve.get_curvature(u=1.00)[0]
+
+    # Get the endpoint curvature analytically
+    curvature_2a = (p - 1) / p * (U[p+1] / U[p+2]) * (W[2] * W[0] / W[1]**2) * \
+                    np.sum(np.cross(P[:, 1] - P[:, 0], P[:, 2] - P[:, 0])**2)**(1/2) * \
+                    np.sum((P[:, 1] - P[:, 0])**2)**(-3/2)
+
+    curvature_2b = (p - 1) / p * (1 - U[n]) / (1 - U[n-1]) * (W[n] * W[n-2] / W[n-1]**2) * \
+                    np.sum(np.cross(P[:, n-1] - P[:, n], P[:, n-2] - P[:, n])**2)**(1/2) * \
+                    np.sum((P[:, n-1] - P[:, n])**2)**(-3/2)
+
+    # Check the error
+    error_curvature_start = np.sqrt((curvature_1a - curvature_2a) ** 2)
+    error_curvature_end   = np.sqrt((curvature_1b - curvature_2b) ** 2)
+    print('Start point curvature error                     :  ', error_curvature_start)
+    print('End point curvature error                       :  ', error_curvature_end)
+    assert error_curvature_start < 1e-10
+    assert error_curvature_end < 1e-6
 
 
 def test_nurbs_curve_example_1():
@@ -457,12 +541,107 @@ def test_nurbs_curve_second_derivative_cfd():
     assert error < 1e-6
 
 
+def test_nurbs_curve_first_derivative_endpoint():
+
+    """ Test the first derivative at the end points of the curve """
+
+    # Define the array of control points
+    P = np.zeros((3, 5))
+    P[:, 0] = [0.00, 0.00, 0.00]
+    P[:, 1] = [0.00, 0.30, 0.05]
+    P[:, 2] = [0.25, 0.30, 0.30]
+    P[:, 3] = [0.50, 0.30, -0.05]
+    P[:, 4] = [0.50, 0.10, 0.10]
+
+    # Maximum index of the control points (counting from zero)
+    n = np.shape(P)[1] - 1
+
+    # Define the array of control point weights
+    W = np.asarray([1, 2, 3, 2, 1])
+
+    # Define the order of the basis polynomials
+    # Linear (p = 1), Quadratic (p = 2), Cubic (p = 3), etc.
+    # Set p = n (number of control points minus one) to obtain a Bezier
+    p = 3
+
+    # Define the knot vector (clamped spline)
+    # p+1 zeros, n-p equispaced points between 0 and 1, and p+1 ones. In total r+1 points where r=n+p+1
+    U = np.concatenate((np.zeros(p), np.linspace(0, 1, n - p + 2), np.ones(p)))
+
+    # Create the NURBS curve
+    nurbs3D = nrb.NurbsCurve(control_points=P, weights=W, degree=p, knots=U)
+
+    # Start point
+    dC_numeric_0 = nurbs3D.get_derivative(u=0.00, order=1)[:, 0]
+    dC_analytic_0 = (p / U[p+1]) * (W[1] / W[0]) * (P[:, 1] - P[:, 0])
+
+    # End point
+    dC_numeric_1 = nurbs3D.get_derivative(u=1.00, order=1)[:, 0]
+    dC_analytic_1 = (p / (1-U[n])) * (W[n-1] / W[n]) * (P[:, n] - P[:, n-1])
+
+    # Check the error
+    error_0 = np.sum((dC_analytic_0 - dC_numeric_0) ** 2) ** (1 / 2)
+    error_1 = np.sum((dC_analytic_1 - dC_numeric_1) ** 2) ** (1 / 2)
+    print('The start point first derivative error is       :  ', error_0)
+    print('The end point first derivative error is         :  ', error_1)
+    assert error_0 < 1e-6
+    assert error_1 < 1e-6
+
+
+def test_nurbs_curve_second_derivative_endpoint():
+
+    """ Test the second derivative at the end points of the curve """
+
+    # Define the array of control points
+    P = np.zeros((3, 5))
+    P[:, 0] = [0.00, 0.00, 0.00]
+    P[:, 1] = [0.10, 0.30, 0.00]
+    P[:, 2] = [0.25, 0.30, 0.30]
+    P[:, 3] = [0.50, 0.30, -0.05]
+    P[:, 4] = [0.50, 0.10, 0.10]
+
+    # Maximum index of the control points (counting from zero)
+    n = np.shape(P)[1] - 1
+
+    # Define the array of control point weights
+    W = np.asarray([1, 2, 3, 2, 1])
+
+    # Define the order of the basis polynomials
+    # Linear (p = 1), Quadratic (p = 2), Cubic (p = 3), etc.
+    # Set p = n (number of control points minus one) to obtain a Bezier
+    p = 3
+
+    # Define the knot vector (clamped spline)
+    # p+1 zeros, n-p equispaced points between 0 and 1, and p+1 ones. In total r+1 points where r=n+p+1
+    U = np.concatenate((np.zeros(p), np.linspace(0, 1, n - p + 2), np.ones(p)))
+
+    # Create the NURBS curve
+    nurbs3D = nrb.NurbsCurve(control_points=P, weights=W, degree=p, knots=U)
+
+    # Start point
+    ddC_numeric_0 = nurbs3D.get_derivative(u=0.00, order=2)[:, 0]
+    ddC_analytic_0 = p*(p-1) / U[p+1] * (1/U[p+2] * (W[2] / W[0]) * (P[:, 2] - P[:, 0]) - (1/U[p+1] + 1/U[p+2]) * (W[1] / W[0]) * (P[:, 1] - P[:, 0]) ) + 2 * (p / U[p + 1]) ** 2 * (W[1] / W[0]) * (1 - W[1] / W[0]) * (P[:, 1] - P[:, 0])
+
+    # End point
+    ddC_numeric_1 = nurbs3D.get_derivative(u=1.00, order=2)[:, 0]
+    ddC_analytic_1 = p*(p-1) / (1 - U[n]) * (1/(1 - U[n-1]) * (W[n-2] / W[n]) * (P[:, n-2] - P[:, n]) - (1/(1 - U[n]) + 1/(1 - U[n-1])) * (W[n-1] / W[n]) * (P[:, n-1] - P[:, n]) ) + 2 * (p / (1 - U[n])) ** 2 * (W[n-1] / W[n]) * (1 - W[n-1] / W[n]) * (P[:, n-1] - P[:, n])
+
+    # Check the error
+    error_0 = np.sum((ddC_analytic_0 - ddC_numeric_0) ** 2) ** (1 / 2)
+    error_1 = np.sum((ddC_analytic_1 - ddC_numeric_1) ** 2) ** (1 / 2)
+    print('The start point second derivative error is      :  ', error_0)
+    print('The end point second derivative error is        :  ', error_1)
+    assert error_0 < 1e-6
+    assert error_1 < 1e-6
+
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # Check the functions manually
 # -------------------------------------------------------------------------------------------------------------------- #
-# test_nurbs_curve_scalar_input()
-# test_nurbs_curve_endpoint_property()
+# test_nurbs_curve_float_input()
+# test_nurbs_curve_integer_input()
+# test_nurbs_curve_endpoint_interpolation()
+# test_nurbs_curve_endpoint_curvature()
 # test_nurbs_curve_example_1()
 # test_nurbs_curve_example_2()
 # test_nurbs_curve_example_3()
@@ -472,3 +651,5 @@ def test_nurbs_curve_second_derivative_cfd():
 # test_nurbs_curve_first_derivative_cs()
 # test_nurbs_curve_first_derivative_cfd()
 # test_nurbs_curve_second_derivative_cfd()
+# test_nurbs_curve_first_derivative_endpoint()
+# test_nurbs_curve_second_derivative_endpoint()

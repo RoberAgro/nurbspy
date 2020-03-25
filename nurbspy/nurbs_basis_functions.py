@@ -49,8 +49,8 @@ def compute_basis_polynomials(n, p, U, u, return_degree=None):
     # if p > n: raise Exception('The degree of the basis polynomials must be equal or lower than the number of basis polynomials')
 
     # Number of points where the polynomials are evaluated (vectorized computations)
-    u = np.asarray(u)
-    Nu = np.asarray(u).size
+    u = np.asarray(u * 1.0)     # Convert to array of floats
+    Nu = u.size
 
     # Number of basis polynomials at the current step of the recursion
     m = n + p + 1
@@ -140,7 +140,12 @@ def compute_basis_polynomials_derivatives(n, p, U, u, derivative_order):
     """
 
     # Check the number of derivative order (not possible to compile with Numba yet)
-    if derivative_order > p: raise Exception('The derivative order is higher than the degree of the basis polynomials')
+    # if derivative_order > p: raise Exception('The derivative order is higher than the degree of the basis polynomials')
+    if derivative_order > p: print('The derivative order is higher than the degree of the basis polynomials')
+
+    # Number of points where the polynomials are evaluated (vectorized computations)
+    u = np.asarray(u * 1.0)     # Convert to array of floats
+    Nu = u.size
 
     # Compute the basis polynomials to the right hand side of equation 2.9 recursively down to the zeroth derivative
     # Each new call reduces the degree of the basis polynomials by one
@@ -154,9 +159,6 @@ def compute_basis_polynomials_derivatives(n, p, U, u, derivative_order):
         print('Oooopps, something went wrong in compute_basis_polynomials_derivatives()')
         N = compute_basis_polynomials(n, p, U, u)
         return N
-
-    # Number of points where the polynomials are evaluated (vectorized computations)
-    Nu = np.asarray(u).size
 
     # Initialize the array of basis polynomial derivatives
     N_ders = np.zeros((n + 1, Nu), dtype=u.dtype)
