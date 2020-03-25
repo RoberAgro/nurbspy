@@ -179,7 +179,7 @@ Check out the [surface demos](./demos/demos_surfaces) directory to see more exam
 
 ## Mathematical background
 
-Check out the [Bézier](.docs/A_Briefing_on_Bezier_Curves_and_Surfaces.pdf), [B-Spline](.docs/A_Briefing_on_B_Spline_Curves_and_Surfaces.pdf), and [NURBS](.docs/A_Briefing_on_NURBS_Curves_and_Surfaces.pdf) notes if you want to learn more about the definition and mathematical properties of these curves and surfaces
+Check out the [Bézier](./docs/A_Briefing_on_Bezier_Curves_and_Surfaces.pdf), [B-Spline](./docs/A_Briefing_on_B_Spline_Curves_and_Surfaces.pdf), and [NURBS](./docs/A_Briefing_on_NURBS_Curves_and_Surfaces.pdf) notes if you want to learn more about the definition and mathematical properties of these curves and surfaces
 
 
 ## Contact information
