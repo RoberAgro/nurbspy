@@ -3,8 +3,8 @@ def run():
 
     # Import packages
     import numpy as np
-    import nurbspy as nrb
     import matplotlib.pyplot as plt
+    from .nurbs_curve import NurbsCurve
 
     # Define the array of control points
     P = np.zeros((2,5))
@@ -15,6 +15,6 @@ def run():
     P[:, 4] = [0.40, 0.20]
 
     # Create and plot the Bezier curve
-    bezierCurve = nrb.NurbsCurve(control_points=P)
+    bezierCurve = NurbsCurve(control_points=P)
     bezierCurve.plot()
     plt.show()
