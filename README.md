@@ -31,6 +31,7 @@ The classes and methods were inspired by the algorithms presented in [The NURBS 
 - Methods to evaluate the tangent, normal, and binormal unitary vectors (Frenet-Serret frame of reference)
 - Methods to compute the curvature and torsion
 - Methods to compute the arc-length of the curve by numerical quadrature
+- Methods to for point projection / point inversion
 - Methods to visualize the curve using the Matplotlib library
 
 
@@ -49,6 +50,7 @@ In addition, `nurbspy` provides the following capabilities for NURBS surfaces:
 - Methods to evaluate the unitary normal vectors
 - Methods to evaluate the mean and Gaussian curvatures
 - Methods to compute u- and v-isoparametic curves
+- Methods to for point projection / point inversion
 - Methods to visualize the surface using the Matplotlib library
 
 In addition,  `nurbspy` can work with real and complex data types natively. This allows to compute accurate (down to [machine epsilon!](https://en.wikipedia.org/wiki/Machine_epsilon)) shape derivatives using the [complex step method](https://blogs.mathworks.com/cleve/2013/10/14/complex-step-differentiation/) and avoid the numerical error incurred by finite-difference derivative approximations. This shape sensitivity information is necessary to solve shape optimization problems with many design variables using gradient based-optimization algorithms. To our knowledge, `nurbspy` is the only Python package that provides the flexibility to work with complex numbers right away.
@@ -61,6 +63,7 @@ In addition,  `nurbspy` can work with real and complex data types natively. This
  - [numpy](https://numpy.org/) (multidimensional array library)
  - [scipy](https://www.scipy.org/) (scientific computing library)
  - [numba](http://numba.pydata.org/) (just-in-time Python compiler)
+ - [pygmo](https://github.com/esa/pagmo2) (optimization library)
  - [matplotlib](https://matplotlib.org/) (visualization library)
 
 In addition, `nurbspy` uses [pytest](https://docs.pytest.org/en/latest/) for local tests.
@@ -87,7 +90,7 @@ import nurbspy
 nurbspy.minimal_example.run()
 ```
 
-or typing this one-liner on your terminal:
+or by typing this one-liner on your terminal:
 
 ```python
 python3 -c "import nurbspy; nurbspy.minimal_example.run()"
@@ -168,7 +171,7 @@ bezierSurface.plot(control_points=True, isocurves_u=6, isocurves_v=6)
 plt.show()
 ```
 
-If the installation was succesful, you should be able to see the Bézier surface when you execute the previous script.
+If the installation was successful, you should be able to see the Bézier surface when you execute the previous script.
 
 <p style="margin-top:0.0cm;"> </p>
 <p align="center">
