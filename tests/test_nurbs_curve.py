@@ -9,6 +9,7 @@ import time
 import pdb
 import numpy as np
 import nurbspy as nrb
+import scipy.integrate
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -149,6 +150,56 @@ def test_nurbs_curve_endpoint_curvature():
     print('End point curvature error                       :  ', error_curvature_end)
     assert error_curvature_start < 1e-10
     assert error_curvature_end < 1e-6
+
+
+def test_nurbs_curve_arclength():
+
+    """ Test the NURBS curve arc-length computation """
+
+    # Define the array of control points
+    P = np.zeros((3,11))
+    P[:, 0]  = [0.00, 0.00, 0.00]
+    P[:, 1]  = [0.10, 0.50, 0.00]
+    P[:, 2]  = [0.20, 0.00, 0.50]
+    P[:, 3]  = [0.30, 0.50, 1.00]
+    P[:, 4]  = [0.40, 0.00, 0.50]
+    P[:, 5]  = [0.50, 0.50, 0.00]
+    P[:, 6]  = [0.60, 0.00, 0.50]
+    P[:, 7]  = [0.70, 0.50, 1.00]
+    P[:, 8]  = [0.80, 0.00, 0.50]
+    P[:, 9]  = [0.90, 0.00, 0.00]
+    P[:, 10] = [1.00, 0.00, 0.00]
+
+    # Maximum index of the control points (counting from zero)
+    n = np.shape(P)[1] - 1
+
+    # Define the array of control point weights
+    W = np.asarray([1, 2, 3, 2, 1, 2, 3, 2, 1, 2, 3])
+
+    # Define the order of the basis polynomials
+    p = 4
+
+    # Define the knot vector (clamped spline)
+    # p+1 zeros, n-p equispaced points between 0 and 1, and p+1 ones. In total r+1 points where r=n+p+1
+    U = np.concatenate((np.zeros(p), np.linspace(0, 1, n - p + 2), np.ones(p)))
+
+    # Create the NURBS curve
+    myCurve = nrb.NurbsCurve(control_points=P, weights=W, degree=p, knots=U)
+
+    # Compute the arc length using fixed order quadrature
+    length_fixed = myCurve.get_arclength()
+
+    # Compute the arc length using adaptative quadrature
+    def get_arclegth_differential(u):
+        dCdu = myCurve.get_derivative(u, order=1)
+        dLdu = np.sqrt(np.sum(dCdu ** 2, axis=0))  # dL/du = [(dx_0/du)^2 + ... + (dx_n/du)^2]^(1/2)
+        return dLdu
+    length_adaptative = scipy.integrate.quad(get_arclegth_differential, 0, 1)[0]
+
+    # Check the arc length error
+    arc_length_error = np.abs(length_fixed - length_adaptative)
+    print("The arc length computation error is             :  ", arc_length_error)
+    assert arc_length_error < 1e-3
 
 
 def test_nurbs_curve_example_1():
@@ -635,6 +686,50 @@ def test_nurbs_curve_second_derivative_endpoint():
     assert error_1 < 1e-6
 
 
+def test_nurbs_curve_point_projection():
+
+    # Define the array of control points
+    P = np.zeros((3, 5))
+    P[:, 0] = [0.00, 0.00, 0.00]
+    P[:, 1] = [0.10, 0.30, 0.00]
+    P[:, 2] = [0.25, 0.30, 0.30]
+    P[:, 3] = [0.50, 0.30, -0.05]
+    P[:, 4] = [0.50, 0.10, 0.10]
+
+    # Maximum index of the control points (counting from zero)
+    n = np.shape(P)[1] - 1
+
+    # Define the array of control point weights
+    W = np.asarray([1, 2, 3, 2, 1])
+
+    # Define the order of the basis polynomials
+    # Linear (p = 1), Quadratic (p = 2), Cubic (p = 3), etc.
+    # Set p = n (number of control points minus one) to obtain a Bezier
+    p = 3
+
+    # Define the knot vector (clamped spline)
+    # p+1 zeros, n-p equispaced points between 0 and 1, and p+1 ones. In total r+1 points where r=n+p+1
+    U = np.concatenate((np.zeros(p), np.linspace(0, 1, n - p + 2), np.ones(p)))
+
+    # Create the NURBS curve
+    nurbs3D = nrb.NurbsCurve(control_points=P, weights=W, degree=p, knots=U)
+
+    # Compute a point on the NURBS curve
+    u0 = 5/7
+    P = nurbs3D.get_value(u0)
+
+    # Project the point on the NURBS curve
+    u_opt = nurbs3D.project_point_to_curve(P)
+
+    # Check the error
+    error = np.sqrt((u0 - u_opt) ** 2)
+    print('The error of the projected parameter value is   : ', error)
+    assert error < 1e-6
+
+
+
+
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # Check the functions manually
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -642,6 +737,7 @@ def test_nurbs_curve_second_derivative_endpoint():
 # test_nurbs_curve_integer_input()
 # test_nurbs_curve_endpoint_interpolation()
 # test_nurbs_curve_endpoint_curvature()
+# test_nurbs_curve_arclength()
 # test_nurbs_curve_example_1()
 # test_nurbs_curve_example_2()
 # test_nurbs_curve_example_3()
@@ -653,3 +749,4 @@ def test_nurbs_curve_second_derivative_endpoint():
 # test_nurbs_curve_second_derivative_cfd()
 # test_nurbs_curve_first_derivative_endpoint()
 # test_nurbs_curve_second_derivative_endpoint()
+test_nurbs_curve_point_projection()

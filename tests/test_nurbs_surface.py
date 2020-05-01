@@ -510,6 +510,24 @@ def test_nurbs_surface_second_derivatives_cfd():
     assert error_uv < 1e-6
 
 
+def test_nurbs_surface_point_projection():
+
+    # Create test NURBS surface
+    nurbs_surface = get_nurbs_test_surface()
+
+    # Compute a point on the NURBS surface
+    u0, v0 = 1 / 3, 5 / 7
+    P = nurbs_surface.get_value(u0, v0)
+
+    # Project the point on the NURBS surface
+    u_opt, v_opt = nurbs_surface.project_point_to_curve(P)
+
+    # Check the error
+    error = np.sqrt((u0 - u_opt) ** 2 + (v0 - v_opt) ** 2)
+    print('The error of the projected parameter value is   : ', error)
+    assert error < 1e-6
+
+
 def get_nurbs_test_surface():
 
     # Define the array of control points
@@ -591,3 +609,4 @@ def get_nurbs_test_surface():
 # test_nurbs_surface_first_derivatives_cs()
 # test_nurbs_surface_first_derivatives_cfd()
 # test_nurbs_surface_second_derivatives_cfd()
+# test_nurbs_surface_point_projection()

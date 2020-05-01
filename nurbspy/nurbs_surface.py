@@ -138,8 +138,8 @@ class NurbsSurface:
             v_knots = np.concatenate((np.zeros(v_degree), np.linspace(0, 1, m - v_degree + 2), np.ones(v_degree)))
 
 
-        # B-Spline surface initialization
-        elif weights is None:
+        # B-Spline surface initialization (both degree and knot vector are provided)
+        elif weights is None and u_knots is not None and v_knots is not None:
 
             # Set the surface type flag
             self.surface_type = 'B-Spline'
@@ -155,11 +155,41 @@ class NurbsSurface:
             weights = np.ones((n + 1, m + 1), dtype=control_points.dtype)
 
 
+        # B-Spline surface initialization (degree is given but the knot vector is not provided)
+        elif weights is None and u_knots is None and v_knots is None:
+
+            # Set the surface type flag
+            self.surface_type = 'B-Spline'
+
+            # Set the number of dimensions of the problem
+            self.ndim = np.shape(control_points)[0]
+
+            # Maximum index of the control points (counting from zero)
+            n = np.shape(control_points)[1] - 1
+            m = np.shape(control_points)[2] - 1
+
+            # Define the knot vectors (clamped spline)
+            u_knots = np.concatenate((np.zeros(u_degree), np.linspace(0, 1, n - u_degree + 2), np.ones(u_degree)))
+            v_knots = np.concatenate((np.zeros(v_degree), np.linspace(0, 1, m - v_degree + 2), np.ones(v_degree)))
+
+            # Define the weight of the control points
+            weights = np.ones((n + 1, m + 1), dtype=control_points.dtype)
+
         # NURBS surface initialization
         else:
 
             # Set the surface type flag
             self.surface_type = 'NURBS'
+
+            if u_knots is None and v_knots is None:
+
+                # Maximum index of the control points (counting from zero)
+                n = np.shape(control_points)[1] - 1
+                m = np.shape(control_points)[2] - 1
+
+                # Define the knot vectors (clamped spline)
+                u_knots = np.concatenate((np.zeros(u_degree), np.linspace(0, 1, n - u_degree + 2), np.ones(u_degree)))
+                v_knots = np.concatenate((np.zeros(v_degree), np.linspace(0, 1, m - v_degree + 2), np.ones(v_degree)))
 
             # Set the number of dimensions of the problem
             self.ndim = np.shape(control_points)[0]
@@ -868,50 +898,96 @@ class NurbsSurface:
 
         # Prepare the plot
         if fig is None:
-            fig = mpl.pyplot.figure(figsize=(6, 5))
-            ax = fig.add_subplot(111, projection='3d')
-            ax.view_init(azim=-105, elev=30)
-            ax.grid(False)
-            ax.xaxis.pane.fill = False
-            ax.yaxis.pane.fill = False
-            ax.zaxis.pane.fill = False
-            ax.xaxis.pane.set_edgecolor('k')
-            ax.yaxis.pane.set_edgecolor('k')
-            ax.zaxis.pane.set_edgecolor('k')
-            ax.xaxis.pane._alpha = 0.9
-            ax.yaxis.pane._alpha = 0.9
-            ax.zaxis.pane._alpha = 0.9
-            ax.set_xlabel('$x$ axis', fontsize=11, color='k', labelpad=18)
-            ax.set_ylabel('$y$ axis', fontsize=11, color='k', labelpad=18)
-            ax.set_zlabel('$z$ axis', fontsize=11, color='k', labelpad=18)
-            # ax_xy.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%.1f'))
-            # ax_xy.yaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%.1f'))
-            # ax_xy.zaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%.1f'))
-            for t in ax.xaxis.get_major_ticks(): t.label.set_fontsize(8)
-            for t in ax.yaxis.get_major_ticks(): t.label.set_fontsize(8)
-            for t in ax.zaxis.get_major_ticks(): t.label.set_fontsize(8)
-            ax.xaxis.set_rotate_label(False)
-            ax.yaxis.set_rotate_label(False)
-            ax.zaxis.set_rotate_label(False)
-            if ticks_off:
-                ax.set_xticks([])
-                ax.set_yticks([])
-                ax.set_zticks([])
-            if axis_off:
-                ax.axis('off')
+
+            # One dimension (law of evolution)
+            if self.ndim == 1:
+                fig = mpl.pyplot.figure(figsize=(6, 5))
+                ax = fig.add_subplot(111, projection='3d')
+                ax.view_init(azim=-105, elev=30)
+                ax.grid(False)
+                ax.xaxis.pane.fill = False
+                ax.yaxis.pane.fill = False
+                ax.zaxis.pane.fill = False
+                ax.xaxis.pane.set_edgecolor('k')
+                ax.yaxis.pane.set_edgecolor('k')
+                ax.zaxis.pane.set_edgecolor('k')
+                ax.xaxis.pane._alpha = 0.9
+                ax.yaxis.pane._alpha = 0.9
+                ax.zaxis.pane._alpha = 0.9
+                ax.set_xlabel('$u$ parameter', fontsize=11, color='k', labelpad=18)
+                ax.set_ylabel('$v$ parameter', fontsize=11, color='k', labelpad=18)
+                ax.set_zlabel('NURBS value', fontsize=11, color='k', labelpad=18)
+                # ax_xy.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%.1f'))
+                # ax_xy.yaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%.1f'))
+                # ax_xy.zaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%.1f'))
+                for t in ax.xaxis.get_major_ticks(): t.label.set_fontsize(8)
+                for t in ax.yaxis.get_major_ticks(): t.label.set_fontsize(8)
+                for t in ax.zaxis.get_major_ticks(): t.label.set_fontsize(8)
+                ax.xaxis.set_rotate_label(False)
+                ax.yaxis.set_rotate_label(False)
+                ax.zaxis.set_rotate_label(False)
+                if ticks_off:
+                    ax.set_xticks([])
+                    ax.set_yticks([])
+                    ax.set_zticks([])
+                if axis_off:
+                    ax.axis('off')
+
+
+            # Three dimensions
+            elif self.ndim == 3:
+                fig = mpl.pyplot.figure(figsize=(6, 5))
+                ax = fig.add_subplot(111, projection='3d')
+                ax.view_init(azim=-105, elev=30)
+                ax.grid(False)
+                ax.xaxis.pane.fill = False
+                ax.yaxis.pane.fill = False
+                ax.zaxis.pane.fill = False
+                ax.xaxis.pane.set_edgecolor('k')
+                ax.yaxis.pane.set_edgecolor('k')
+                ax.zaxis.pane.set_edgecolor('k')
+                ax.xaxis.pane._alpha = 0.9
+                ax.yaxis.pane._alpha = 0.9
+                ax.zaxis.pane._alpha = 0.9
+                ax.set_xlabel('$x$ axis', fontsize=11, color='k', labelpad=18)
+                ax.set_ylabel('$y$ axis', fontsize=11, color='k', labelpad=18)
+                ax.set_zlabel('$z$ axis', fontsize=11, color='k', labelpad=18)
+                # ax_xy.xaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%.1f'))
+                # ax_xy.yaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%.1f'))
+                # ax_xy.zaxis.set_major_formatter(mpl.ticker.FormatStrFormatter('%.1f'))
+                for t in ax.xaxis.get_major_ticks(): t.label.set_fontsize(8)
+                for t in ax.yaxis.get_major_ticks(): t.label.set_fontsize(8)
+                for t in ax.zaxis.get_major_ticks(): t.label.set_fontsize(8)
+                ax.xaxis.set_rotate_label(False)
+                ax.yaxis.set_rotate_label(False)
+                ax.zaxis.set_rotate_label(False)
+                if ticks_off:
+                    ax.set_xticks([])
+                    ax.set_yticks([])
+                    ax.set_zticks([])
+                if axis_off:
+                    ax.axis('off')
+
 
         # Add objects to the plot
-        if surface:        self.plot_surface(fig, ax, color=surface_color, colorbar=colorbar, Nu=Nu, Nv=Nv)
-        if boundary:       self.plot_boundary(fig, ax)
-        if control_points: self.plot_control_points(fig, ax)
-        if normals:        self.plot_normals(fig, ax)
-        if isocurves_u:
-            self.plot_isocurve_u(fig, ax, u_values=np.linspace(0, 1, isocurves_u))
-        if isocurves_v:
-              self.plot_isocurve_v(fig, ax, v_values=np.linspace(0, 1, isocurves_v))
+        if self.ndim == 1:
+            if surface:        self.plot_surface(fig, ax, color=surface_color, colorbar=colorbar, Nu=Nu, Nv=Nv)
+            if control_points: self.plot_control_points(fig, ax)
 
-        # Set the scaling of the axes
-        self.rescale_plot(fig, ax)
+        # Add objects to the plot
+        if self.ndim == 3:
+            # Add objects to the plot
+            if surface:        self.plot_surface(fig, ax, color=surface_color, colorbar=colorbar, Nu=Nu, Nv=Nv)
+            if boundary:       self.plot_boundary(fig, ax)
+            if control_points: self.plot_control_points(fig, ax)
+            if normals:        self.plot_normals(fig, ax)
+            if isocurves_u:
+                self.plot_isocurve_u(fig, ax, u_values=np.linspace(0, 1, isocurves_u))
+            if isocurves_v:
+                  self.plot_isocurve_v(fig, ax, v_values=np.linspace(0, 1, isocurves_v))
+
+            # Set the scaling of the axes
+            self.rescale_plot(fig, ax)
 
         return fig, ax
 
@@ -924,67 +1000,16 @@ class NurbsSurface:
         [uu, vv] = np.meshgrid(u, v, indexing='ij')
         u = uu.flatten()
         v = vv.flatten()
-        X, Y, Z = np.real(self.get_value(u, v)).reshape((3, Nu, Nv))
 
-        # Plot the surface
-        if color == 'mean_curvature':
+        if self.ndim == 1:
 
-            # Define a colormap based on the curvature values
-            mean_curvature, _ = np.real(self.get_curvature(u, v))
-            curvature = np.reshape(mean_curvature, (Nu, Nv))
-            curvature_normalized = (curvature - np.amin(curvature)) / (np.amax(curvature) - np.amin(curvature))
-            curvature_colormap = mpl.cm.viridis(curvature_normalized)
-
-            # Plot the surface with a curvature colormap
-            surf_handle = ax.plot_surface(X, Y, Z,
-                                          # color='blue',
-                                          # edgecolor='blue',
-                                          # cmap = 'viridis',
-                                          facecolors=curvature_colormap,
-                                          linewidth=0.75,
-                                          alpha=1,
-                                          shade=False,
-                                          antialiased=True,
-                                          zorder=2,
-                                          ccount=Nu,
-                                          rcount=Nv)
-            if colorbar:
-                fig.set_size_inches(7, 5)
-                surf_handle.set_clim(np.amin(curvature), np.amax(curvature))
-                cbar = fig.colorbar(surf_handle, ax=ax, orientation='vertical', pad=0.15, fraction=0.03, aspect=20)
-                cbar.set_label(color)
-
-        elif color == 'gaussian_curvature':
-
-            # Define a colormap based on the curvature values
-            _, gaussian_curvature= np.real(self.get_curvature(u, v))
-            curvature = np.reshape(gaussian_curvature, (Nu, Nv))
-            curvature_normalized = (curvature - np.amin(curvature)) / (np.amax(curvature) - np.amin(curvature))
-            curvature_colormap = mpl.cm.viridis(curvature_normalized)
-
-            # Plot the surface with a curvature colormap
-            surf_handle = ax.plot_surface(X, Y, Z,
-                                          # color='blue',
-                                          # edgecolor='blue',
-                                          # cmap = 'viridis',
-                                          facecolors=curvature_colormap,
-                                          linewidth=0.75,
-                                          alpha=1,
-                                          shade=False,
-                                          antialiased=True,
-                                          zorder=2,
-                                          ccount=Nu,
-                                          rcount=Nv)
-            if colorbar:
-                fig.set_size_inches(7, 5)
-                surf_handle.set_clim(np.amin(curvature), np.amax(curvature))
-                cbar = fig.colorbar(surf_handle, ax=ax, orientation='vertical', pad=0.15, fraction=0.03, aspect=20)
-                cbar.set_label(color)
-
-        else:
+            # Get the values
+            Z = np.real(self.get_value(u, v)).reshape((Nu, Nv))
+            u = u.reshape((Nu, Nv))
+            v = v.reshape((Nu, Nv))
 
             # Plot the surface with a plain color
-            ax.plot_surface(X, Y, Z,
+            ax.plot_surface(u, v, Z,
                             color=color,
                             # edgecolor='blue',
                             linewidth=0,
@@ -994,6 +1019,81 @@ class NurbsSurface:
                             zorder=0,
                             ccount=Nv,
                             rcount=Nu)
+
+
+        if self.ndim == 3:
+
+            # Get the coordinates
+            X, Y, Z = np.real(self.get_value(u, v)).reshape((3, Nu, Nv))
+
+            # Plot the surface
+            if color == 'mean_curvature':
+
+                # Define a colormap based on the curvature values
+                mean_curvature, _ = np.real(self.get_curvature(u, v))
+                curvature = np.reshape(mean_curvature, (Nu, Nv))
+                curvature_normalized = (curvature - np.amin(curvature)) / (np.amax(curvature) - np.amin(curvature))
+                curvature_colormap = mpl.cm.viridis(curvature_normalized)
+
+                # Plot the surface with a curvature colormap
+                surf_handle = ax.plot_surface(X, Y, Z,
+                                              # color='blue',
+                                              # edgecolor='blue',
+                                              # cmap = 'viridis',
+                                              facecolors=curvature_colormap,
+                                              linewidth=0.75,
+                                              alpha=1,
+                                              shade=False,
+                                              antialiased=True,
+                                              zorder=2,
+                                              ccount=Nu,
+                                              rcount=Nv)
+                if colorbar:
+                    fig.set_size_inches(7, 5)
+                    surf_handle.set_clim(np.amin(curvature), np.amax(curvature))
+                    cbar = fig.colorbar(surf_handle, ax=ax, orientation='vertical', pad=0.15, fraction=0.03, aspect=20)
+                    cbar.set_label(color)
+
+            elif color == 'gaussian_curvature':
+
+                # Define a colormap based on the curvature values
+                _, gaussian_curvature= np.real(self.get_curvature(u, v))
+                curvature = np.reshape(gaussian_curvature, (Nu, Nv))
+                curvature_normalized = (curvature - np.amin(curvature)) / (np.amax(curvature) - np.amin(curvature))
+                curvature_colormap = mpl.cm.viridis(curvature_normalized)
+
+                # Plot the surface with a curvature colormap
+                surf_handle = ax.plot_surface(X, Y, Z,
+                                              # color='blue',
+                                              # edgecolor='blue',
+                                              # cmap = 'viridis',
+                                              facecolors=curvature_colormap,
+                                              linewidth=0.75,
+                                              alpha=1,
+                                              shade=False,
+                                              antialiased=True,
+                                              zorder=2,
+                                              ccount=Nu,
+                                              rcount=Nv)
+                if colorbar:
+                    fig.set_size_inches(7, 5)
+                    surf_handle.set_clim(np.amin(curvature), np.amax(curvature))
+                    cbar = fig.colorbar(surf_handle, ax=ax, orientation='vertical', pad=0.15, fraction=0.03, aspect=20)
+                    cbar.set_label(color)
+
+            else:
+
+                # Plot the surface with a plain color
+                ax.plot_surface(X, Y, Z,
+                                color=color,
+                                # edgecolor='blue',
+                                linewidth=0,
+                                alpha=alpha,
+                                shade=False,
+                                antialiased=True,
+                                zorder=0,
+                                ccount=Nv,
+                                rcount=Nu)
 
 
     def plot_boundary(self, fig, ax, color='black', linewidth=1.00, linestyle='-',
@@ -1024,27 +1124,57 @@ class NurbsSurface:
 
         """ Plot the control points """
 
-        # Plot the control net
-        Px, Py, Pz = np.real(self.P)
-        ax.plot_wireframe(Px, Py, Pz,
-                          edgecolor=color,
-                          linewidth=linewidth,
-                          linestyles=linestyle,
-                          alpha=1.0,
-                          antialiased=True,
-                          zorder=1)
 
-        # Plot the control points
-        points, = ax.plot(Px.flatten(), Py.flatten(), Pz.flatten())
-        points.set_linewidth(linewidth)
-        points.set_linestyle(' ')
-        points.set_marker(markerstyle)
-        points.set_markersize(markersize)
-        points.set_markeredgewidth(linewidth)
-        points.set_markeredgecolor(color)
-        points.set_markerfacecolor('w')
-        points.set_zorder(4)
-        # points.set_label(' ')
+        if self.ndim == 1:
+
+            # Plot the control net
+            Px = np.linspace(0, 1, np.shape(self.P)[1])
+            Py = np.linspace(0, 1, np.shape(self.P)[2])
+            Px, Py = np.meshgrid(Px, Py, indexing='ij')
+            Pz = np.real(self.P)[0, :, :]
+            ax.plot_wireframe(Px, Py, Pz,
+                              edgecolor=color,
+                              linewidth=linewidth,
+                              linestyles=linestyle,
+                              alpha=1.0,
+                              antialiased=True,
+                              zorder=1)
+
+            # Plot the control points
+            points, = ax.plot(Px.flatten(), Py.flatten(), Pz.flatten())
+            points.set_linewidth(linewidth)
+            points.set_linestyle(' ')
+            points.set_marker(markerstyle)
+            points.set_markersize(markersize)
+            points.set_markeredgewidth(linewidth)
+            points.set_markeredgecolor(color)
+            points.set_markerfacecolor('w')
+            points.set_zorder(4)
+            # points.set_label(' ')
+
+
+        if self.ndim == 3:
+            # Plot the control net
+            Px, Py, Pz = np.real(self.P)
+            ax.plot_wireframe(Px, Py, Pz,
+                              edgecolor=color,
+                              linewidth=linewidth,
+                              linestyles=linestyle,
+                              alpha=1.0,
+                              antialiased=True,
+                              zorder=1)
+
+            # Plot the control points
+            points, = ax.plot(Px.flatten(), Py.flatten(), Pz.flatten())
+            points.set_linewidth(linewidth)
+            points.set_linestyle(' ')
+            points.set_marker(markerstyle)
+            points.set_markersize(markersize)
+            points.set_markeredgewidth(linewidth)
+            points.set_markeredgecolor(color)
+            points.set_markerfacecolor('w')
+            points.set_zorder(4)
+            # points.set_label(' ')
 
 
     def plot_normals(self, fig, ax, number_u=10, number_v=10, scale=0.075):
@@ -1162,3 +1292,101 @@ class NurbsSurface:
         plt.tight_layout(pad=5.0, w_pad=None, h_pad=None)
 
         return fig, ax
+
+
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # Define the point projection problem class (Pygmo's user-defined problem)
+    # ---------------------------------------------------------------------------------------------------------------- #
+    def project_point_to_curve(self, P, algorithm_name='lbfgs'):
+
+        """ Solve the point projection problem for the prescribed point `P` """
+
+        # Import pygmo
+        import pygmo as pg
+
+        # Create the optimization algorithm
+        myAlgorithm = pg.algorithm(pg.nlopt(algorithm_name))
+        myAlgorithm.extract(pg.nlopt).xtol_rel = 1e-6
+        myAlgorithm.extract(pg.nlopt).ftol_rel = 1e-6
+        myAlgorithm.extract(pg.nlopt).xtol_abs = 1e-6
+        myAlgorithm.extract(pg.nlopt).ftol_abs = 1e-6
+        myAlgorithm.extract(pg.nlopt).maxeval = 100
+        myAlgorithm.set_verbosity(0)
+
+        # Create the optimization problem
+        myProblem = pg.problem(self.PointToSurfaceProjectionProblem(self.get_value, self.get_derivative, P))
+
+        # Create the population
+        myPopulation = pg.population(prob=myProblem, size=1)
+
+        # Create a list with the different starting points
+        U0 = self.U[0:-1] +  1/ 2 * (self.U[1:] - self.U[0:-1])
+        V0 = self.V[0:-1] + 1 / 2 * (self.V[1:] - self.V[0:-1])
+        U0, V0 = np.meshgrid(U0, V0)
+        U0, V0 = U0.flatten(), V0.flatten()
+        for u0, v0 in zip(U0, V0):
+            myPopulation.push_back([u0, v0])
+
+        # Solve the optimization problem (evolve the population in Pygmo's jargon)
+        myPopulation = myAlgorithm.evolve(myPopulation)
+
+        # Get the optimum
+        u, v = myPopulation.champion_x
+
+        return u, v
+
+    class PointToSurfaceProjectionProblem:
+
+        def __init__(self, S, dS, P):
+            """ Solve point inversion problem: min(u,v) ||S(u,v) - P|| """
+            self.S_func = S
+            self.dS_func = dS
+            self.P = np.reshape(P, (P.shape[0], 1))
+
+        @staticmethod
+        def get_bounds():
+            """ Set the bounds for the optimization problem """
+            return [0.00, 0.00], [1.00, 1.00]
+
+        def fitness(self, x):
+            """ Evaluate the deviation between the prescribed point and the parametrized point """
+            u = np.asarray([x[0]])
+            v = np.asarray([x[1]])
+            S = self.S_func(u, v)
+            P = self.P
+            return np.asarray([np.sum(np.sum((S - P) ** 2, axis=0) ** (1 / 2))])
+
+        def gradient(self, x):
+            """ Compute the gradient of the fitness function analytically """
+            u = np.asarray([x[0]])
+            v = np.asarray([x[1]])
+            S = self.S_func(u, v)
+            dSdu = self.dS_func(u, v, order_u=1, order_v=0)
+            dSdv = self.dS_func(u, v, order_u=0, order_v=1)
+            P = self.P
+            numerator_u = np.sum((S-P) * dSdu, axis=0)
+            numerator_v = np.sum((S-P) * dSdv, axis=0)
+            denominator = np.sum(np.sum((S-P) ** 2, axis=0) ** (1 / 2))
+            gradient_u = numerator_u / denominator
+            gradient_v = numerator_v / denominator
+            return np.concatenate((gradient_u, gradient_v))
+
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# Quick and dirty way to create an offset surface
+# -------------------------------------------------------------------------------------------------------------------- #
+def make_offset_surface(surface, offset):
+
+    _, Nu, Nv = surface.P.shape
+    Nu, Nv = 10*Nu, 10*Nv
+    uu = np.linspace(0, 1, Nu)
+    vv = np.linspace(0, 1, Nv)
+    u, v = np.meshgrid(uu, vv, indexing='ij')
+    u, v, = u.flatten(), v.flatten()
+    S = surface.get_value(u, v)
+    N = surface.get_normals(u, v)
+    P = np.reshape(S - offset * N, (3, Nu, Nv))
+    offset_surface = NurbsSurface(control_points=P, u_degree=surface.p, v_degree=surface.q)
+
+    return offset_surface
+
