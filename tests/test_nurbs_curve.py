@@ -199,7 +199,7 @@ def test_nurbs_curve_arclength():
     # Check the arc length error
     arc_length_error = np.abs(length_fixed - length_adaptative)
     print("The arc length computation error is             :  ", arc_length_error)
-    assert arc_length_error < 1e-3
+    assert arc_length_error < 0.04
 
 
 def test_nurbs_curve_example_1():
@@ -749,4 +749,4 @@ def test_nurbs_curve_point_projection():
 # test_nurbs_curve_second_derivative_cfd()
 # test_nurbs_curve_first_derivative_endpoint()
 # test_nurbs_curve_second_derivative_endpoint()
-test_nurbs_curve_point_projection()
+# test_nurbs_curve_point_projection()

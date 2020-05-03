@@ -934,6 +934,21 @@ class NurbsSurface:
                     ax.axis('off')
 
 
+            # Two dimensions (bi-variate plane)
+            if self.ndim == 2:
+                fig = plt.figure(figsize=(6, 5))
+                ax = fig.add_subplot(111)
+                ax.set_xlabel('$x$ axis', fontsize=12, color='k', labelpad=12)
+                ax.set_ylabel('$y$ axis', fontsize=12, color='k', labelpad=12)
+                for t in ax.xaxis.get_major_ticks(): t.label.set_fontsize(12)
+                for t in ax.yaxis.get_major_ticks(): t.label.set_fontsize(12)
+                if ticks_off:
+                    ax.set_xticks([])
+                    ax.set_yticks([])
+                if axis_off:
+                    ax.axis('off')
+
+
             # Three dimensions
             elif self.ndim == 3:
                 fig = mpl.pyplot.figure(figsize=(6, 5))
@@ -973,6 +988,23 @@ class NurbsSurface:
         if self.ndim == 1:
             if surface:        self.plot_surface(fig, ax, color=surface_color, colorbar=colorbar, Nu=Nu, Nv=Nv)
             if control_points: self.plot_control_points(fig, ax)
+
+
+        if self.ndim == 2:
+            if surface:        self.plot_surface(fig, ax, color=surface_color, colorbar=colorbar, Nu=Nu, Nv=Nv)
+            if control_points: self.plot_control_points(fig, ax)
+            if boundary:       self.plot_boundary(fig, ax)
+            if isocurves_u:
+                self.plot_isocurve_u(fig, ax, u_values=np.linspace(0, 1, isocurves_u))
+            if isocurves_v:
+                  self.plot_isocurve_v(fig, ax, v_values=np.linspace(0, 1, isocurves_v))
+
+            # Set the aspect ratio of the data
+            ax.set_aspect(1.0)
+
+            # Adjust pad
+            plt.tight_layout(pad=5.0, w_pad=None, h_pad=None)
+
 
         # Add objects to the plot
         if self.ndim == 3:
@@ -1020,6 +1052,23 @@ class NurbsSurface:
                             ccount=Nv,
                             rcount=Nu)
 
+
+        if self.ndim == 2:
+
+            # Get the values
+            u = np.linspace(0, 1, Nu)
+            v = np.linspace(0, 1, Nv)
+
+            # Get the coordinates of the boundaries
+            x1, y1 = self.get_value(u, 0*v)
+            x2, y2 = self.get_value(1 + 0*u, v)
+            x3, y3 = self.get_value(u[::-1], 1 + 0*v)
+            x4, y4 = self.get_value(0 * u, v[::-1])
+            x = np.concatenate((x1, x2, x3, x4))
+            y = np.concatenate((y1, y2, y3, y4))
+
+            # Plot a filled polygon
+            ax.fill(x,y, color=color, alpha=alpha)
 
         if self.ndim == 3:
 
@@ -1124,7 +1173,6 @@ class NurbsSurface:
 
         """ Plot the control points """
 
-
         if self.ndim == 1:
 
             # Plot the control net
@@ -1152,6 +1200,15 @@ class NurbsSurface:
             points.set_zorder(4)
             # points.set_label(' ')
 
+        if self.ndim == 2:
+            # Plot the control net
+            Px, Py = np.real(self.P)
+            ax.plot(Px, Py,
+                    color=color, linewidth=linewidth, linestyle='-', marker=markerstyle, markersize=markersize,
+                    markeredgewidth=linewidth, markeredgecolor=color, markerfacecolor='w', zorder=4)
+            ax.plot(Px.transpose(), Py.transpose(),
+                    color=color, linewidth=linewidth, linestyle='-', marker=markerstyle, markersize=markersize,
+                    markeredgewidth=linewidth, markeredgecolor=color, markerfacecolor='w', zorder=4)
 
         if self.ndim == 3:
             # Plot the control net
@@ -1297,7 +1354,7 @@ class NurbsSurface:
     # ---------------------------------------------------------------------------------------------------------------- #
     # Define the point projection problem class (Pygmo's user-defined problem)
     # ---------------------------------------------------------------------------------------------------------------- #
-    def project_point_to_curve(self, P, algorithm_name='lbfgs'):
+    def project_point_to_surface(self, P, algorithm_name='lbfgs'):
 
         """ Solve the point projection problem for the prescribed point `P` """
 
@@ -1367,8 +1424,12 @@ class NurbsSurface:
             numerator_u = np.sum((S-P) * dSdu, axis=0)
             numerator_v = np.sum((S-P) * dSdv, axis=0)
             denominator = np.sum(np.sum((S-P) ** 2, axis=0) ** (1 / 2))
-            gradient_u = numerator_u / denominator
-            gradient_v = numerator_v / denominator
+            if np.abs(denominator) > 0:
+                gradient_u = numerator_u / denominator
+                gradient_v = numerator_v / denominator
+            else:
+                gradient_u = np.asarray(0)[np.newaxis]
+                gradient_v = np.asarray(0)[np.newaxis]
             return np.concatenate((gradient_u, gradient_v))
 
 

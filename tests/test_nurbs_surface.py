@@ -520,7 +520,7 @@ def test_nurbs_surface_point_projection():
     P = nurbs_surface.get_value(u0, v0)
 
     # Project the point on the NURBS surface
-    u_opt, v_opt = nurbs_surface.project_point_to_curve(P)
+    u_opt, v_opt = nurbs_surface.project_point_to_surface(P)
 
     # Check the error
     error = np.sqrt((u0 - u_opt) ** 2 + (v0 - v_opt) ** 2)

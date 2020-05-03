@@ -797,7 +797,7 @@ class NurbsCurve:
             return dLdu
 
         # Compute the arc length of C(t) in the interval [u1, u2] by numerical integration
-        arclength = scipy.integrate.fixed_quad(get_arclegth_differential, u1, u2, n=8)[0]
+        arclength = scipy.integrate.fixed_quad(get_arclegth_differential, u1, u2, n=10)[0]
 
         return arclength
 
@@ -1259,4 +1259,10 @@ class NurbsCurve:
             C = self.C_func(u)
             dC = self.dC_func(u, order=1)
             P = self.P
-            return np.sum((C - P) * dC, axis=0)/np.sum(np.sum((C - P) ** 2, axis=0) ** (1 / 2))
+            numerator = np.sum((C - P) * dC, axis=0)
+            denominator = np.sum(np.sum((C - P) ** 2, axis=0) ** (1 / 2))
+            if np.abs(denominator) > 0:
+                gradient = numerator/denominator
+            else:
+                gradient = np.asarray(0)[np.newaxis]
+            return gradient
