@@ -178,6 +178,9 @@ class NurbsCurve:
         self.p = degree
         self.U = knots
 
+        # Knot vector in OpenCascade format
+        self.U_values, self.U_mults = np.unique(self.U, return_counts=True)
+
 
 
     # ---------------------------------------------------------------------------------------------------------------- #
@@ -521,9 +524,12 @@ class NurbsCurve:
         n2 = np.shape(new_nurbs.P)[1] - 1
 
         # Combine the knot vectors (inner knot has p+1 multiplicity)
+        eps = 0
         U_start = np.zeros((self.p + 1,))
         U_end = np.ones((self.p + 1,))
         U_mid = np.ones((self.p + 1,)) / 2
+        U_mid[0] = U_mid[0] - eps       # Quick and dirty fix for GMSH (avoid multiplicity equal to degree)
+        U_mid[-1] = U_mid[-1] + eps     # Quick and dirty fix for GMSH (avoid multiplicity equal to degree)
         U1 = 0.00 + self.U[self.p + 1:n1 + 1] / 2
         U2 = 0.50 + new_nurbs.U[self.p + 1:n2 + 1] / 2
         U = np.concatenate((U_start, U1, U_mid, U2, U_end))
@@ -893,13 +899,13 @@ class NurbsCurve:
         return fig, ax
 
 
-    def plot_curve(self, fig, ax, linewidth=1.5, linestyle='-', color='black'):
+    def plot_curve(self, fig, ax, linewidth=1.5, linestyle='-', color='black', u1=0.00, u2=1.00):
 
         """ Plot the coordinates of the NURBS curve """
 
         # One dimension (law of evolution)
         if self.ndim == 1:
-            u = np.linspace(0, 1, 501)
+            u = np.linspace(u1, u2, 501)
             X = np.real(self.get_value(u))
             line, = ax.plot(u, X[0,:])
             line.set_linewidth(linewidth)
@@ -910,7 +916,7 @@ class NurbsCurve:
 
         # Two dimensions (plane curve)
         elif self.ndim == 2:
-            u = np.linspace(0, 1.00, 501)
+            u = np.linspace(u1, u2, 501)
             X, Y = np.real(self.get_value(u))
             line, = ax.plot(X, Y)
             line.set_linewidth(linewidth)
@@ -921,7 +927,7 @@ class NurbsCurve:
 
         # Three dimensions (space curve)
         elif self.ndim == 3:
-            u = np.linspace(0, 1, 501)
+            u = np.linspace(u1, u2, 501)
             X, Y, Z = np.real(self.get_value(u))
             line, = ax.plot(X, Y, Z)
             line.set_linewidth(linewidth)

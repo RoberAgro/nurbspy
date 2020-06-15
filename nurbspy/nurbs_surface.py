@@ -203,6 +203,9 @@ class NurbsSurface:
         self.U = u_knots
         self.V = v_knots
 
+        # Knot vector in OpenCascade format
+        self.U_values, self.U_mults = np.unique(self.U, return_counts=True)
+        self.V_values, self.V_mults = np.unique(self.V, return_counts=True)
 
 
     # ---------------------------------------------------------------------------------------------------------------- #
@@ -741,9 +744,12 @@ class NurbsSurface:
         n2 = np.shape(new_nurbs.P)[1] - 1
 
         # Combine the knot vectors (inner knot has p+1 multiplicity)
+        eps = 0
         U_start = np.zeros((self.p + 1,))
         U_end = np.ones((self.p + 1,))
         U_mid = np.ones((self.p + 1,)) / 2
+        U_mid[0] = U_mid[0] - eps       # Quick and dirty fix for GMSH (avoid multiplicity equal to degree)
+        U_mid[-1] = U_mid[-1] + eps     # Quick and dirty fix for GMSH (avoid multiplicity equal to degree)
         U1 = 0.00 + self.U[self.p + 1:n1 + 1] / 2
         U2 = 0.50 + new_nurbs.U[self.p + 1:n2 + 1] / 2
         U = np.concatenate((U_start, U1, U_mid, U2, U_end))
@@ -782,9 +788,12 @@ class NurbsSurface:
         n2 = np.shape(new_nurbs.P)[2] - 1
 
         # Combine the knot vectors (inner knot has p+1 multiplicity)
+        eps = 0
         V_start = np.zeros((self.q + 1,))
         V_end = np.ones((self.q + 1,))
         V_mid = np.ones((self.q + 1,)) / 2
+        V_mid[0] = V_mid[0] - eps       # Quick and dirty fix for GMSH (avoid multiplicity equal to degree)
+        V_mid[-1] = V_mid[-1] + eps     # Quick and dirty fix for GMSH (avoid multiplicity equal to degree)
         V1 = 0.00 + self.U[self.q + 1:n1 + 1] / 2
         V2 = 0.50 + new_nurbs.U[self.q + 1:n2 + 1] / 2
         V = np.concatenate((V_start, V1, V_mid, V2, V_end))
@@ -1060,10 +1069,10 @@ class NurbsSurface:
             v = np.linspace(0, 1, Nv)
 
             # Get the coordinates of the boundaries
-            x1, y1 = self.get_value(u, 0*v)
-            x2, y2 = self.get_value(1 + 0*u, v)
-            x3, y3 = self.get_value(u[::-1], 1 + 0*v)
-            x4, y4 = self.get_value(0 * u, v[::-1])
+            x1, y1 = self.get_value(u, 0*u)
+            x2, y2 = self.get_value(1 + 0*v, v)
+            x3, y3 = self.get_value(u[::-1], 1 + 0*u)
+            x4, y4 = self.get_value(0 * v, v[::-1])
             x = np.concatenate((x1, x2, x3, x4))
             y = np.concatenate((y1, y2, y3, y4))
 
